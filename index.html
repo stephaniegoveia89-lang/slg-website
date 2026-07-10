@@ -5,6 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SLG Solutions | Operations Consulting & Fractional Chief of Staff</title>
 
+<link rel="alternate" hreflang="en" href="https://solutionsslg.com/index.html">
+<link rel="alternate" hreflang="fr" href="https://solutionsslg.com/index-fr.html">
+<link rel="alternate" hreflang="x-default" href="https://solutionsslg.com/index.html">
+
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-X6CB355HQ8"></script>
 <script>
@@ -293,6 +297,16 @@
     transition:width .2s ease;
   }
   .nav-links a:hover::after{ width:100%; }
+  .nav-links a.lang-switch{
+    border:1.5px solid var(--forest);
+    border-radius:2px;
+    padding:4px 9px;
+    font-size:11px;
+    font-weight:700;
+    letter-spacing:0.05em;
+  }
+  .nav-links a.lang-switch::after{ display:none; }
+  .nav-links a.lang-switch:hover{ background:var(--forest); color:var(--ivory); }
 
   .nav-actions{ display:flex; align-items:center; gap:16px; }
   .icon-btn{
@@ -984,6 +998,7 @@
       <li><a href="#benefits">Benefits</a></li>
       <li><a href="#services">Services</a></li>
       <li><a href="#faq">FAQ</a></li>
+      <li><a href="index-fr.html" class="lang-switch">FR</a></li>
     </ul>
 
     <div class="nav-actions">
@@ -1015,7 +1030,6 @@
         </div>
         <div class="hero-ctas">
           <a href="#contact" class="btn btn-primary">Book a Discovery Call</a>
-          <a href="mailto:YOUR-EMAIL@solutionsslg.com?subject=Newsletter%20Signup&body=Please%20add%20me%20to%20the%20SLG%20Solutions%20newsletter." class="btn btn-ghost">Sign Up for My Weekly Newsletter</a>
         </div>
         <p class="hero-note">Serving businesses, non-profits, and associations across Canada — rooted in the Ottawa–Gatineau region.</p>
       </div>
@@ -1505,7 +1519,7 @@
             <p class="form-note">Prefer to just grab a slot? Use the calendar — it's faster.</p>
             <p class="form-note">We'll only use this information to respond to your inquiry — never shared, never sold.</p>
             <div class="form-success" id="formSuccess">Thanks — your message is on its way. We'll be in touch shortly.</div>
-            <div class="form-success" id="formError" style="display:none;background:rgba(200,90,70,0.12);border-color:#C85A46;color:#C85A46;">Something went wrong sending that — please try again, or email us directly.</div>
+            <div class="form-success" id="formError" style="display:none;background:rgba(200,90,70,0.12);border-color:#C85A46;color:#C85A46;">Something went wrong sending that — please try again, or <a href="mailto:info@solutionsslg.com" style="color:#C85A46;text-decoration:underline;">email us directly</a>.</div>
           </form>
         </div>
       </div>
