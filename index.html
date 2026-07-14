@@ -21,6 +21,11 @@
 <!-- Favicon (SLG monogram mark, matches the nav) -->
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCI+CiAgPHJlY3QgeD0iMiIgeT0iMiIgd2lkdGg9IjYwIiBoZWlnaHQ9IjYwIiBmaWxsPSIjMjg3ODVFIiBzdHJva2U9IiNDOUE4NEMiIHN0cm9rZS13aWR0aD0iMyIvPgogIDx0ZXh0IHg9IjMyIiB5PSI0MCIgZm9udC1mYW1pbHk9Ikdlb3JnaWEsICdUaW1lcyBOZXcgUm9tYW4nLCBzZXJpZiIgZm9udC1zaXplPSIyMiIgZmlsbD0iI0M5QTg0QyIgdGV4dC1hbmNob3I9Im1pZGRsZSI+U0xHPC90ZXh0Pgo8L3N2Zz4K">
 
+<!-- Typography -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Archivo:wght@400;500;600;700&display=swap" rel="stylesheet">
+
 <!-- SEO -->
 <meta name="description" content="Operations consulting, fractional Chief of Staff support, and practical operations solutions for Ottawa businesses and organizations across Canada.">
 
@@ -163,8 +168,11 @@
     --charcoal:#1E2B27;
     --sage:#5A7068;
     --white:#FFFFFF;
-    --serif: Georgia, 'Times New Roman', serif;
-    --sans: Arial, Helvetica, sans-serif;
+    --serif: 'Fraunces', Georgia, 'Times New Roman', serif;
+    --sans: 'Archivo', Arial, Helvetica, sans-serif;
+    --shadow-sm: 0 2px 8px rgba(26,82,64,0.07);
+    --shadow-md: 0 10px 30px rgba(26,82,64,0.12);
+    --ease: cubic-bezier(.22,.9,.3,1);
   }
 
   *{box-sizing:border-box;}
@@ -180,7 +188,8 @@
   }
   h1,h2,h3,h4{
     font-family:var(--serif);
-    font-weight:400;
+    font-weight:500;
+    letter-spacing:-0.01em;
     margin:0;
     color:var(--deep-forest);
   }
@@ -200,11 +209,23 @@
     font-family:var(--sans);
     font-weight:700;
     font-size:11px;
-    letter-spacing:0.14em;
+    letter-spacing:0.16em;
     text-transform:uppercase;
     color:var(--gold);
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  .eyebrow::before{
+    content:"";
+    width:22px;
+    height:2px;
+    background:var(--gold);
+    flex-shrink:0;
   }
   .eyebrow.on-dark{ color:var(--warm-gold); }
+  .eyebrow.on-dark::before{ background:var(--warm-gold); }
+  .eyebrow.centered{ justify-content:center; }
 
   /* ---------- Buttons ---------- */
   .btn{
@@ -218,15 +239,21 @@
     letter-spacing:0.04em;
     text-transform:uppercase;
     border:1.5px solid transparent;
-    transition:all .2s ease;
+    transition:all .25s var(--ease);
     white-space:nowrap;
   }
   .btn-primary{
     background:var(--forest);
     color:var(--ivory);
     border-color:var(--forest);
+    box-shadow:0 4px 14px rgba(40,120,94,0.25);
   }
-  .btn-primary:hover{ background:var(--deep-forest); border-color:var(--deep-forest); }
+  .btn-primary:hover{
+    background:var(--deep-forest);
+    border-color:var(--deep-forest);
+    transform:translateY(-2px);
+    box-shadow:0 8px 22px rgba(26,82,64,0.3);
+  }
   .btn-ghost{
     background:transparent;
     color:var(--deep-forest);
@@ -249,7 +276,9 @@
     background:rgba(252,254,252,0.94);
     backdrop-filter:blur(6px);
     border-bottom:1px solid rgba(30,43,39,0.08);
+    transition:box-shadow .3s ease;
   }
+  header.scrolled{ box-shadow:0 6px 24px rgba(26,82,64,0.08); }
   .nav{
     display:flex;
     align-items:center;
@@ -334,86 +363,147 @@
 
   /* ---------- Hero ---------- */
   .hero{
-    padding:88px 0 100px;
-    background:var(--ivory);
+    padding:96px 0 108px;
+    background:
+      radial-gradient(ellipse 620px 420px at 18% -10%, rgba(40,120,94,0.10), transparent 60%),
+      radial-gradient(ellipse 560px 380px at 85% 8%, rgba(226,201,122,0.16), transparent 60%),
+      var(--ivory);
     overflow:hidden;
+    position:relative;
   }
-  .hero-grid{
-    display:grid;
-    grid-template-columns:1.05fr 0.95fr;
-    gap:56px;
-    align-items:center;
+  .hero::before{
+    content:"";
+    position:absolute;
+    top:0; left:50%;
+    transform:translateX(-50%);
+    width:1px;
+    height:64px;
+    background:linear-gradient(to bottom, var(--gold), transparent);
+    opacity:0.6;
   }
-  .hero h1{
-    font-size:58px;
-    line-height:1.05;
-    margin-top:14px;
-    color:var(--deep-forest);
+  .hero-bg{
+    position:absolute;
+    inset:0;
+    z-index:0;
+    pointer-events:none;
   }
-  .hero .tagline{
-    font-family:var(--serif);
-    font-style:italic;
-    font-size:20px;
-    color:var(--forest);
-    margin-top:14px;
-    letter-spacing:0.01em;
+  .hero-bg::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background-image:url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMjAiIGhlaWdodD0iMjIwIiB2aWV3Qm94PSIwIDAgMjIwIDIyMCI+CjxnIHN0cm9rZT0iIzI4Nzg1RSIgc3Ryb2tlLXdpZHRoPSIxIiBzdHJva2Utb3BhY2l0eT0iMC4xMCIgZmlsbD0ibm9uZSI+CjxsaW5lIHgxPSIyNCIgeTE9IjM0IiB4Mj0iOTYiIHkyPSIxOCIvPgo8bGluZSB4MT0iOTYiIHkxPSIxOCIgeDI9IjE1OCIgeTI9IjY0Ii8+CjxsaW5lIHgxPSIyNCIgeTE9IjM0IiB4Mj0iNDYiIHkyPSIxMTgiLz4KPGxpbmUgeDE9IjQ2IiB5MT0iMTE4IiB4Mj0iMTI4IiB5Mj0iMTQwIi8+CjxsaW5lIHgxPSIxMjgiIHkxPSIxNDAiIHgyPSIxOTAiIHkyPSIxODIiLz4KPGxpbmUgeDE9IjQ2IiB5MT0iMTE4IiB4Mj0iNjYiIHkyPSIxOTYiLz4KPGxpbmUgeDE9IjEyOCIgeTE9IjE0MCIgeDI9IjE1OCIgeTI9IjY0Ii8+CjwvZz4KPGcgZmlsbD0iIzI4Nzg1RSIgZmlsbC1vcGFjaXR5PSIwLjE0Ij4KPGNpcmNsZSBjeD0iMjQiIGN5PSIzNCIgcj0iMyIvPgo8Y2lyY2xlIGN4PSI5NiIgY3k9IjE4IiByPSIyLjQiLz4KPGNpcmNsZSBjeD0iMTU4IiBjeT0iNjQiIHI9IjMiLz4KPGNpcmNsZSBjeD0iNDYiIGN5PSIxMTgiIHI9IjIuNiIvPgo8Y2lyY2xlIGN4PSIxMjgiIGN5PSIxNDAiIHI9IjMuNCIvPgo8Y2lyY2xlIGN4PSIxOTAiIGN5PSIxODIiIHI9IjIuNiIvPgo8Y2lyY2xlIGN4PSI2NiIgY3k9IjE5NiIgcj0iMi42Ii8+CjwvZz4KPC9zdmc+");
+    background-repeat:repeat;
+    background-size:200px 200px;
+    opacity:0.7;
   }
-  .hero .lede{
-    margin-top:26px;
-    font-size:17px;
-    color:var(--charcoal);
-    max-width:520px;
+  .hero-blueprint{
+    width:100%;
+    height:100%;
+    display:block;
+    position:relative;
   }
-  .hero .lede p{ margin:0; }
-  .hero .lede-list{
-    margin:16px 0;
+  .org-tree{ transform-origin:1000px 70px; }
+  .org-tree .tier line{
+    stroke-dasharray:1;
+    stroke-dashoffset:1;
+    opacity:0.55;
+    animation:drawLine .7s var(--ease) forwards;
+  }
+  .org-tree .tier-0 line{ animation-delay:.5s; }
+  .org-tree .tier-1 line{ animation-delay:1.1s; }
+  @keyframes drawLine{ to{ stroke-dashoffset:0; } }
+
+  .org-tree .node{
+    opacity:0;
+    transform:scale(0.3);
+    transform-box:fill-box;
+    transform-origin:center;
+    animation:nodeIn .45s var(--ease) forwards, nodeBreathe 5s ease-in-out infinite;
+  }
+  .org-tree .node-root{
+    opacity:0;
+    transform:scale(0.3);
+    transform-box:fill-box;
+    transform-origin:center;
+    animation:nodeIn .45s var(--ease) .15s forwards, nodeBreathe 5s ease-in-out infinite 2s;
+  }
+  .org-tree .node-tier1 .node{ animation-delay:1.15s, 2.2s; }
+  .org-tree .node-tier1 .node:nth-child(2){ animation-delay:1.15s, 2.6s; }
+  .org-tree .node-tier2 .node{ animation-delay:1.75s, 3s; }
+  .org-tree .node-tier2 .node:nth-child(2){ animation-delay:1.75s, 3.3s; }
+  .org-tree .node-tier2 .node:nth-child(3){ animation-delay:1.75s, 3.6s; }
+  .org-tree .node-tier2 .node:nth-child(4){ animation-delay:1.75s, 3.9s; }
+  @keyframes nodeIn{
+    to{ opacity:1; transform:scale(1); }
+  }
+  @keyframes nodeBreathe{
+    0%, 100%{ opacity:0.85; }
+    50%{ opacity:1; transform:scale(1.15); }
+  }
+  @media (prefers-reduced-motion: reduce){
+    .org-tree .tier line{ animation:none; stroke-dashoffset:0; opacity:0.55; }
+    .org-tree .node, .org-tree .node-root{ animation:none; opacity:0.9; transform:scale(1); }
+  }
+  @media (max-width:720px){
+    .org-tree{ display:none; }
+  }
+  .hero-solo{
+    max-width:800px;
+    text-align:center;
     display:flex;
     flex-direction:column;
-    gap:10px;
-  }
-  .hero .lede-list li{
-    font-size:16px;
-    color:var(--charcoal);
-    padding-left:20px;
+    align-items:center;
     position:relative;
-    line-height:1.5;
+    z-index:1;
   }
-  .hero .lede-list li::before{
-    content:"";
-    position:absolute; left:0; top:8px;
-    width:7px; height:7px;
-    background:var(--gold);
+  .hero-kicker{
+    font-family:var(--sans);
+    font-weight:700;
+    font-size:12px;
+    letter-spacing:0.18em;
+    text-transform:uppercase;
+    color:var(--gold);
+    margin-bottom:22px;
+    animation:heroRise .7s var(--ease) both;
   }
+  .hero-headline{
+    font-family:var(--serif);
+    font-size:50px;
+    line-height:1.18;
+    color:var(--deep-forest);
+    margin:0;
+    animation:heroRise .7s var(--ease) .08s both;
+  }
+  .hero .lede{
+    margin-top:28px;
+    font-size:18px;
+    color:var(--charcoal);
+    max-width:620px;
+    animation:heroRise .7s var(--ease) .18s both;
+  }
+  .hero .lede p{ margin:0; }
   .hero-ctas{
     margin-top:36px;
     display:flex;
     gap:16px;
     align-items:center;
-    flex-wrap:wrap;
-  }
-  .hero-note{
-    margin-top:18px;
-    font-size:12.5px;
-    color:var(--sage);
-  }
-
-  .hero-visual{
-    background:var(--mist);
-    border:1px solid rgba(40,120,94,0.15);
-    aspect-ratio:1/0.92;
-    position:relative;
-    display:flex;
-    align-items:center;
     justify-content:center;
+    flex-wrap:wrap;
+    animation:heroRise .7s var(--ease) .28s both;
   }
-  .hero-visual .caption{
-    position:absolute;
-    bottom:18px;left:0;right:0;
-    text-align:center;
-    font-size:11px;
-    letter-spacing:0.1em;
-    text-transform:uppercase;
+  .hero-trust{
+    margin-top:28px;
+    font-size:12.5px;
+    letter-spacing:0.02em;
     color:var(--sage);
+    animation:heroRise .7s var(--ease) .36s both;
+  }
+  @keyframes heroRise{
+    from{ opacity:0; transform:translateY(14px); }
+    to{ opacity:1; transform:translateY(0); }
+  }
+  @media (prefers-reduced-motion: reduce){
+    .hero-kicker, .hero-headline, .hero .lede, .hero-ctas, .hero-trust{ animation:none; }
   }
 
   /* ---------- Marquee band ---------- */
@@ -463,6 +553,94 @@
     .marquee-group .item{ font-size:11.5px; padding:0 16px; }
   }
 
+  /* ---------- Connected-dots background texture ---------- */
+  .section-texture{ position:relative; isolation:isolate; }
+  .section-texture::before{
+    content:"";
+    position:absolute; inset:0;
+    background-image:url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMjAiIGhlaWdodD0iMjIwIiB2aWV3Qm94PSIwIDAgMjIwIDIyMCI+CjxnIHN0cm9rZT0iIzI4Nzg1RSIgc3Ryb2tlLXdpZHRoPSIxIiBzdHJva2Utb3BhY2l0eT0iMC4xNiIgZmlsbD0ibm9uZSI+CjxsaW5lIHgxPSIyNCIgeTE9IjM0IiB4Mj0iOTYiIHkyPSIxOCIvPgo8bGluZSB4MT0iOTYiIHkxPSIxOCIgeDI9IjE1OCIgeTI9IjY0Ii8+CjxsaW5lIHgxPSIyNCIgeTE9IjM0IiB4Mj0iNDYiIHkyPSIxMTgiLz4KPGxpbmUgeDE9IjQ2IiB5MT0iMTE4IiB4Mj0iMTI4IiB5Mj0iMTQwIi8+CjxsaW5lIHgxPSIxMjgiIHkxPSIxNDAiIHgyPSIxOTAiIHkyPSIxODIiLz4KPGxpbmUgeDE9IjQ2IiB5MT0iMTE4IiB4Mj0iNjYiIHkyPSIxOTYiLz4KPGxpbmUgeDE9IjEyOCIgeTE9IjE0MCIgeDI9IjE1OCIgeTI9IjY0Ii8+CjwvZz4KPGcgZmlsbD0iIzI4Nzg1RSIgZmlsbC1vcGFjaXR5PSIwLjIyIj4KPGNpcmNsZSBjeD0iMjQiIGN5PSIzNCIgcj0iMyIvPgo8Y2lyY2xlIGN4PSI5NiIgY3k9IjE4IiByPSIyLjQiLz4KPGNpcmNsZSBjeD0iMTU4IiBjeT0iNjQiIHI9IjMiLz4KPGNpcmNsZSBjeD0iNDYiIGN5PSIxMTgiIHI9IjIuNiIvPgo8Y2lyY2xlIGN4PSIxMjgiIGN5PSIxNDAiIHI9IjMuNCIvPgo8Y2lyY2xlIGN4PSIxOTAiIGN5PSIxODIiIHI9IjIuNiIvPgo8Y2lyY2xlIGN4PSI2NiIgY3k9IjE5NiIgcj0iMi42Ii8+CjwvZz4KPC9zdmc+");
+    background-repeat:repeat;
+    background-size:220px 220px;
+    opacity:0.6;
+    pointer-events:none;
+    z-index:0;
+  }
+  .section-texture > .wrap{ position:relative; z-index:1; }
+
+  /* ---------- Problem Recognition ---------- */
+  .problem-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:20px;
+  }
+  .problem-card{
+    background:var(--mist);
+    border-top:3px solid var(--forest);
+    padding:26px 22px;
+    transition:transform .3s var(--ease), box-shadow .3s var(--ease), background .3s var(--ease);
+  }
+  .problem-card:hover{
+    transform:translateY(-5px);
+    box-shadow:var(--shadow-md);
+    background:var(--white);
+  }
+  .problem-card h3{ font-size:16px; margin-bottom:10px; line-height:1.3; }
+  .problem-card p{ font-size:13.5px; color:var(--sage); line-height:1.55; }
+
+  @media (max-width:900px){
+    .problem-grid{ grid-template-columns:1fr 1fr; }
+  }
+  @media (max-width:600px){
+    .problem-grid{ grid-template-columns:1fr; }
+  }
+  .problem-resolution{
+    margin-top:40px;
+    font-family:var(--serif);
+    font-size:22px;
+    line-height:1.5;
+    color:var(--deep-forest);
+    text-align:center;
+    max-width:760px;
+    margin-left:auto;
+    margin-right:auto;
+  }
+
+  /* ---------- Why Organizations Hire Us ---------- */
+  .hire-triggers{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:2px;
+    background:rgba(30,43,39,0.1);
+    border-top:1px solid rgba(30,43,39,0.1);
+  }
+  .hire-trigger{
+    background:var(--parchment);
+    font-size:15.5px;
+    color:var(--deep-forest);
+    font-weight:600;
+    padding:16px 20px 16px 40px;
+    position:relative;
+    transition:background .25s var(--ease);
+  }
+  .hire-trigger:hover{ background:var(--white); }
+  .hire-trigger::before{
+    content:"";
+    position:absolute; left:20px; top:22px;
+    width:7px; height:7px;
+    background:var(--gold);
+  }
+  @media (max-width:700px){
+    .hire-triggers{ grid-template-columns:1fr; }
+  }
+  .trigger-closer{
+    margin-top:32px;
+    text-align:center;
+    font-family:var(--serif);
+    font-style:italic;
+    font-size:20px;
+    color:var(--forest);
+  }
+
   /* ---------- Pillars ---------- */
   .pillars{
     display:grid;
@@ -473,6 +651,11 @@
     background:var(--white);
     padding:32px 28px;
     border-top:3px solid var(--forest);
+    transition:transform .3s var(--ease), box-shadow .3s var(--ease);
+  }
+  .pillar:hover{
+    transform:translateY(-5px);
+    box-shadow:var(--shadow-md);
   }
   .pillar h3{ font-size:19px; margin-bottom:12px; }
   .pillar p{ color:var(--sage); font-size:14.5px; }
@@ -552,11 +735,19 @@
     display:grid;
     grid-template-columns:1fr 1fr;
     gap:0;
-    background:var(--deep-forest);
+    background:
+      radial-gradient(ellipse 700px 500px at 100% 0%, rgba(226,201,122,0.08), transparent 60%),
+      repeating-linear-gradient(0deg, rgba(252,254,252,0.025) 0px, rgba(252,254,252,0.025) 1px, transparent 1px, transparent 48px),
+      repeating-linear-gradient(90deg, rgba(252,254,252,0.025) 0px, rgba(252,254,252,0.025) 1px, transparent 1px, transparent 48px),
+      var(--deep-forest);
     color:var(--ivory);
+    position:relative;
   }
-  .roi-col{ padding:56px; }
-  .roi-col.left{ border-right:1px solid rgba(226,201,122,0.25); }
+  .roi-col{ padding:56px; position:relative; }
+  .roi-col.left{
+    border-right:1px solid rgba(226,201,122,0.28);
+    box-shadow:6px 0 24px -12px rgba(0,0,0,0.35);
+  }
   .roi-col h3{ color:var(--warm-gold); font-size:22px; margin-bottom:20px; }
   .roi-col p{ color:rgba(252,254,252,0.85); font-size:15px; margin-bottom:14px; }
   .cost-counter{ margin:0 0 22px; }
@@ -610,21 +801,34 @@
     gap:1px;
     background:rgba(30,43,39,0.1);
   }
-  @media (min-width:961px){
-    .services-grid > .service-card:last-child{ grid-column:2 / 3; }
-  }
   .service-card{
     background:var(--white);
     padding:34px 28px;
     min-height:230px;
     display:flex;
     flex-direction:column;
+    position:relative;
+    transition:transform .3s var(--ease), box-shadow .3s var(--ease), z-index 0s;
   }
+  .service-card:hover{
+    transform:translateY(-4px);
+    box-shadow:var(--shadow-md);
+    z-index:2;
+  }
+  .service-card .icon-badge{
+    width:56px;height:56px;
+    border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    margin-bottom:20px;
+    background:rgba(40,120,94,0.10);
+  }
+  .service-card:nth-child(even) .icon-badge{ background:rgba(201,168,76,0.14); }
+  .service-card:nth-child(even) .sicon{ color:var(--gold); }
   .service-card .sicon{
-    width:40px;height:40px;
-    margin-bottom:22px;
+    width:26px;height:26px;
     color:var(--forest);
     overflow:visible;
+    margin-bottom:0;
   }
   .service-card h3{ font-size:17px; margin-bottom:10px; line-height:1.3; }
   .service-card p{ color:var(--sage); font-size:13.5px; flex-grow:1; }
@@ -669,6 +873,26 @@
   .bar-1{ transform-origin: 8.5px 18px; animation-delay: 0s; }
   .bar-2{ transform-origin: 13.5px 18px; animation-delay: 0.2s; }
   .bar-3{ transform-origin: 18.5px 18px; animation-delay: 0.4s; }
+
+  /* Resourcing — layers gently rise into place, staggered, like stacking capacity */
+  @keyframes layerRise{
+    0%, 100% { transform: translateY(0); opacity: 0.55; }
+    50% { transform: translateY(-2px); opacity: 1; }
+  }
+  .resource-layer{ animation: layerRise 2.2s ease-in-out infinite; }
+  .resource-layer-1{ animation-delay: 0.4s; }
+  .resource-layer-2{ animation-delay: 0.2s; }
+  .resource-layer-3{ animation-delay: 0s; }
+
+  /* Other — a simple loading-dot bounce, three dots in sequence */
+  @keyframes dotBounce{
+    0%, 100% { transform: translateY(0); opacity: 0.5; }
+    50% { transform: translateY(-4px); opacity: 1; }
+  }
+  .dot-bounce{ animation: dotBounce 1.2s ease-in-out infinite; }
+  .dot-bounce-1{ animation-delay: 0s; }
+  .dot-bounce-2{ animation-delay: 0.15s; }
+  .dot-bounce-3{ animation-delay: 0.3s; }
 
   /* ---------- Fractional vs Consulting ---------- */
   .compare-grid{
@@ -736,6 +960,11 @@
     border-top:3px solid var(--forest);
     display:flex;
     flex-direction:column;
+    transition:transform .3s var(--ease), box-shadow .3s var(--ease);
+  }
+  .offering-card:hover{
+    transform:translateY(-5px);
+    box-shadow:var(--shadow-md);
   }
   .offering-card .oicon{ width:34px;height:34px;color:var(--forest);margin-bottom:18px; }
   .offering-card h3{ font-size:23px; margin:6px 0 16px; }
@@ -777,6 +1006,40 @@
   .see-more-toggle:hover{ color:var(--deep-forest); text-decoration:underline; }
   .see-more-toggle .chev{ transition:transform .2s ease; }
   .see-more-toggle[aria-expanded="true"] .chev{ transform:rotate(180deg); }
+
+  /* ---------- Testimonial ---------- */
+  .testimonial-section{ padding:88px 0; }
+  .testimonial{
+    max-width:760px;
+    margin:0 auto;
+    text-align:center;
+  }
+  .quote-mark{ margin:0 auto 20px; }
+  .testimonial-quote{
+    font-family:var(--serif);
+    font-size:26px;
+    line-height:1.5;
+    color:var(--deep-forest);
+  }
+  .testimonial-attr{
+    margin-top:28px;
+    font-family:var(--sans);
+    font-weight:700;
+    font-size:14px;
+    color:var(--forest);
+    display:flex;
+    flex-direction:column;
+    gap:4px;
+  }
+  .testimonial-attr span{
+    font-weight:400;
+    font-size:13px;
+    color:var(--sage);
+    letter-spacing:0.02em;
+  }
+  @media (max-width:600px){
+    .testimonial-quote{ font-size:21px; }
+  }
 
   /* ---------- FAQ ---------- */
   .faq-item{
@@ -936,6 +1199,52 @@
     gap:12px;
   }
 
+  /* ---------- Scroll reveal ---------- */
+  .reveal{
+    opacity:0;
+    transform:translateY(22px);
+    transition:opacity .7s var(--ease), transform .7s var(--ease);
+  }
+  .reveal.is-visible{
+    opacity:1;
+    transform:translateY(0);
+  }
+  .problem-grid > .reveal:nth-child(1),
+  .pillars > .reveal:nth-child(1),
+  .services-grid > .reveal:nth-child(1),
+  .offering-grid > .reveal:nth-child(1),
+  .hire-triggers > .reveal:nth-child(1){ transition-delay:0s; }
+  .problem-grid > .reveal:nth-child(2),
+  .pillars > .reveal:nth-child(2),
+  .services-grid > .reveal:nth-child(2),
+  .offering-grid > .reveal:nth-child(2),
+  .hire-triggers > .reveal:nth-child(2){ transition-delay:.08s; }
+  .problem-grid > .reveal:nth-child(3),
+  .pillars > .reveal:nth-child(3),
+  .services-grid > .reveal:nth-child(3),
+  .hire-triggers > .reveal:nth-child(3){ transition-delay:.16s; }
+  .problem-grid > .reveal:nth-child(4),
+  .services-grid > .reveal:nth-child(4),
+  .hire-triggers > .reveal:nth-child(4){ transition-delay:.24s; }
+  .problem-grid > .reveal:nth-child(5),
+  .services-grid > .reveal:nth-child(5),
+  .hire-triggers > .reveal:nth-child(5){ transition-delay:.32s; }
+  .problem-grid > .reveal:nth-child(6),
+  .services-grid > .reveal:nth-child(6),
+  .hire-triggers > .reveal:nth-child(6){ transition-delay:.4s; }
+  .services-grid > .reveal:nth-child(7){ transition-delay:.48s; }
+  .services-grid > .reveal:nth-child(8){ transition-delay:.56s; }
+  .services-grid > .reveal:nth-child(9){ transition-delay:.64s; }
+  .faq-item.reveal:nth-child(1){ transition-delay:0s; }
+  .faq-item.reveal:nth-child(2){ transition-delay:.05s; }
+  .faq-item.reveal:nth-child(3){ transition-delay:.1s; }
+  .faq-item.reveal:nth-child(4){ transition-delay:.15s; }
+  .faq-item.reveal:nth-child(5){ transition-delay:.2s; }
+  .faq-item.reveal:nth-child(6){ transition-delay:.25s; }
+  @media (prefers-reduced-motion: reduce){
+    .reveal{ opacity:1; transform:none; }
+  }
+
   /* ---------- Focus visibility ---------- */
   a:focus-visible, button:focus-visible{
     outline:2px solid var(--gold);
@@ -950,11 +1259,11 @@
 
   /* ---------- Responsive ---------- */
   @media (max-width:960px){
-    .hero-grid, .cos-grid, .roi-grid, .contact-grid{ grid-template-columns:1fr; }
+    .cos-grid, .roi-grid, .contact-grid{ grid-template-columns:1fr; }
     .roi-col.left{ border-right:none; border-bottom:1px solid rgba(226,201,122,0.25); }
     .services-grid{ grid-template-columns:repeat(2,1fr); }
     .pillars{ grid-template-columns:1fr; }
-    .hero h1{ font-size:44px; }
+    .hero-headline{ font-size:32px; }
     .footer-sig{ text-align:left; }
     .compare-grid, .offering-grid{ grid-template-columns:1fr; }
   }
@@ -1017,31 +1326,66 @@
 
   <!-- ================= HERO / ABOUT ================= -->
   <section class="hero" id="about">
-    <div class="wrap hero-grid">
-      <div>
-        <p class="eyebrow">Operations Consulting &amp; Fractional Chief of Staff Services</p>
-        <h1>SLG Solutions</h1>
-        <p class="tagline">Strategy. Leadership. Growth.</p>
-        <div class="lede">
-          <p>Running a business is supposed to feel good. So why does it feel like chaos and stalled initiatives?</p>
-          <p style="margin-top:16px;">Are you battling outdated systems and critical knowledge that only lives in your head? You're spending more time firefighting than leading — and you know it.</p>
-          <p style="margin-top:16px;">You don't need more hours in the day. You need someone to build the structure you haven't had time to build yourself, so that you can concentrate on running the company.</p>
-          <p style="margin-top:16px;">That's SLG Solutions.</p>
-        </div>
-        <div class="hero-ctas">
-          <a href="#contact" class="btn btn-primary">Book a Discovery Call</a>
-        </div>
-        <p class="hero-note">Serving businesses, non-profits, and associations across Canada — rooted in the Ottawa–Gatineau region.</p>
-      </div>
+    <div class="hero-bg" aria-hidden="true">
+      <svg class="hero-blueprint" viewBox="0 0 1200 640" preserveAspectRatio="xMidYMid slice">
+        <defs>
+          <linearGradient id="heroFade" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#28785E" stop-opacity="0.16"/>
+            <stop offset="100%" stop-color="#28785E" stop-opacity="0"/>
+          </linearGradient>
+          <mask id="heroMask">
+            <rect x="0" y="0" width="1200" height="640" fill="url(#heroFade)"/>
+          </mask>
+        </defs>
+        <g mask="url(#heroMask)" stroke="#28785E" stroke-width="1">
+          <line x1="0" y1="80" x2="1200" y2="80"/>
+          <line x1="0" y1="200" x2="1200" y2="200"/>
+          <line x1="0" y1="320" x2="1200" y2="320"/>
+          <line x1="0" y1="440" x2="1200" y2="440"/>
+          <line x1="120" y1="0" x2="120" y2="640"/>
+          <line x1="320" y1="0" x2="320" y2="640"/>
+          <line x1="880" y1="0" x2="880" y2="640"/>
+          <line x1="1080" y1="0" x2="1080" y2="640"/>
+        </g>
 
-      <div class="hero-visual">
-        <svg id="chaosSvg" width="100%" viewBox="0 0 420 380" role="img" aria-label="A building rising floor by floor, from the ground up">
-          <!-- foundation + building drawn by JS -->
-          <g id="linesLayer"></g>
-          <g id="nodesLayer"></g>
-        </svg>
-        <p class="caption">Operational chaos → scalable infrastructure</p>
+        <!-- signature motif: an organizational structure taking shape, right side — echoing "we build the structure" -->
+        <g class="org-tree">
+          <g class="tier tier-0" stroke="#C9A84C" stroke-width="1.5" fill="none">
+            <line x1="1000" y1="70" x2="930" y2="150" pathLength="1"/>
+            <line x1="1000" y1="70" x2="1080" y2="150" pathLength="1"/>
+          </g>
+          <g class="tier tier-1" stroke="#C9A84C" stroke-width="1.5" fill="none">
+            <line x1="930" y1="150" x2="870" y2="235" pathLength="1"/>
+            <line x1="930" y1="150" x2="970" y2="240" pathLength="1"/>
+            <line x1="1080" y1="150" x2="1050" y2="238" pathLength="1"/>
+            <line x1="1080" y1="150" x2="1140" y2="232" pathLength="1"/>
+          </g>
+          <circle class="node node-root" cx="1000" cy="70" r="6" fill="#C9A84C"/>
+          <g class="node-tier1">
+            <circle class="node" cx="930" cy="150" r="5" fill="#C9A84C"/>
+            <circle class="node" cx="1080" cy="150" r="5" fill="#C9A84C"/>
+          </g>
+          <g class="node-tier2">
+            <circle class="node" cx="870" cy="235" r="4" fill="#28785E"/>
+            <circle class="node" cx="970" cy="240" r="4" fill="#28785E"/>
+            <circle class="node" cx="1050" cy="238" r="4" fill="#28785E"/>
+            <circle class="node" cx="1140" cy="232" r="4" fill="#28785E"/>
+          </g>
+        </g>
+      </svg>
+    </div>
+    <div class="wrap hero-solo">
+      <p class="hero-kicker">Operations Consulting &amp; Fractional Chief of Staff Services</p>
+      <h1 class="hero-headline">Let's get your business on the right track.</h1>
+      <div class="lede">
+        <p>Running a business is supposed to feel good. So why does it feel like chaos and uncompleted initiatives? Are you battling outdated systems and keeping critical knowledge nowhere else but in your head? You're spending more time firefighting than leading — and you know it.</p>
+        <p style="margin-top:16px; font-size:22px; color:var(--forest); font-weight:600;">You don't need more hours in the day. You need someone to build the structure you haven't had time to build yourself, so that you can concentrate on running the company.</p>
       </div>
+      <div class="hero-ctas">
+        <a href="#contact" class="btn btn-primary">Book a Discovery Call</a>
+        <a href="#benefits" class="btn btn-ghost">See Services</a>
+      </div>
+      <p class="hero-trust">Serving businesses, non-profits, and associations across Canada — rooted in the Ottawa–Gatineau region.</p>
     </div>
   </section>
 
@@ -1077,11 +1421,52 @@
     </div>
   </div>
 
+  <!-- ================= PROBLEM RECOGNITION ================= -->
+  <section class="bg-white">
+    <div class="wrap">
+      <div class="section-head reveal" style="margin-bottom:36px;">
+        <p class="eyebrow">We see it all the time</p>
+        <h2 style="font-size:28px;">The Problems You're Already Living With</h2>
+        <p class="sub">Before we talk about the fix, we want you to know: we've seen this all before...</p>
+      </div>
+      <div class="problem-grid">
+        <div class="problem-card reveal">
+          <h3>Everything Runs Through You</h3>
+          <p>Every decision, every approval, every fire — it all comes back to you.</p>
+        </div>
+        <div class="problem-card reveal">
+          <h3>Growth Feels Like More Chaos</h3>
+          <p>Revenue is up. So is the chaos. More people, more meetings, less clarity.</p>
+        </div>
+        <div class="problem-card reveal">
+          <h3>Good People, No System</h3>
+          <p>Your team works hard, but nothing is documented, tracked, or repeatable.</p>
+        </div>
+        <div class="problem-card reveal">
+          <h3>Initiatives Stall Out</h3>
+          <p>Great ideas start strong and quietly die somewhere between the meeting and the follow-through.</p>
+        </div>
+        <div class="problem-card reveal">
+          <h3>The Profits Aren't There</h3>
+          <p>Revenue looks fine on paper. The bank account tells a different story.</p>
+        </div>
+        <div class="problem-card reveal">
+          <h3>You Keep Hiring, But Nothing Gets Easier</h3>
+          <p>More headcount, same chaos — just distributed across more people.</p>
+        </div>
+      </div>
+      <p class="problem-resolution">What you need is a strategic partner who understands your vision, your reality, and has the experience to implement the systems, structures, and processes that are best suited to your business.</p>
+    </div>
+  </section>
+
   <!-- ================= PILLARS ================= -->
   <section class="bg-mist">
     <div class="wrap">
+      <div class="section-head reveal" style="margin-bottom:36px;">
+        <p class="eyebrow">What We Offer</p>
+      </div>
       <div class="pillars">
-        <div class="pillar">
+        <div class="pillar reveal">
           <svg class="pillar-icon" viewBox="0 0 64 64" width="48" height="48" aria-hidden="true">
             <line x1="8" y1="54" x2="56" y2="54" stroke="#C9A84C" stroke-width="2" opacity="0.5"/>
             <rect class="pi-block pi-block-1" x="10" y="40" width="20" height="12" rx="1.5" fill="#28785E"/>
@@ -1091,9 +1476,9 @@
           </svg>
           <div class="num">For the Start-Up</div>
           <h3>Build the foundation</h3>
-          <p>We help new businesses put structure in place while they're still small — so growth doesn't mean starting from scratch later.</p>
+          <p>We help new businesses put structures in place while they scale, so they have strong foundations to build on. Starting early prevents chaos from building and having to play catch-up later to get everything in order.</p>
         </div>
-        <div class="pillar">
+        <div class="pillar reveal">
           <svg class="pillar-icon" viewBox="0 0 64 64" width="48" height="48" aria-hidden="true">
             <path class="pi-tangled" d="M4,44 L12,41 L18,39 L23,36 L20.9,35.8 L18.9,35.3 L17,34.4 L15.3,33.2 L13.8,31.7 L12.6,30 L11.7,28.1 L11.2,26.1 L11,24 L11.2,21.9 L11.7,19.9 L12.6,18 L13.8,16.3 L15.3,14.8 L17,13.6 L18.9,12.7 L20.9,12.2 L23,12 L25.1,12.2 L27.1,12.7 L29,13.6 L30.7,14.8 L32.2,16.3 L33.4,18 L34.3,19.9 L34.8,21.9 L35,24 L34.8,26.1 L34.3,28.1 L33.4,30 L32.2,31.7 L30.7,33.2 L29,34.4 L27.1,35.3 L33.9,35.3 L32,34.4 L30.3,33.2 L28.8,31.7 L27.6,30 L26.7,28.1 L26.2,26.1 L26,24 L26.2,21.9 L26.7,19.9 L27.6,18 L28.8,16.3 L30.3,14.8 L32,13.6 L33.9,12.7 L35.9,12.2 L38,12 L40.1,12.2 L42.1,12.7 L44,13.6 L45.7,14.8 L47.2,16.3 L48.4,18 L49.3,19.9 L49.8,21.9 L50,24 L49.8,26.1 L49.3,28.1 L48.4,30 L47.2,31.7 L45.7,33.2 L44,34.4 L42.1,35.3 L40.1,35.8 L38,36 L46,38 L52,42 L60,40" stroke="#28785E" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
             <path class="pi-straight" d="M4,44 C20,38 44,38 60,40" stroke="#28785E" stroke-width="3" fill="none" stroke-linecap="round"/>
@@ -1102,7 +1487,7 @@
           <h3>Untangle the chaos</h3>
           <p>When spreadsheets, tribal knowledge, and heroic late nights stop working, we rebuild the systems that let you scale with confidence.</p>
         </div>
-        <div class="pillar">
+        <div class="pillar reveal">
           <svg class="pillar-icon" id="fireIcon" viewBox="0 0 64 64" width="48" height="48" aria-hidden="true">
             <path id="flamePath" d="M32,10 C36,20 44,24 44,34 C44,42 38,48 32,48 C26,48 20,42 20,34 C20,26 26,24 26,18 C28,24 32,22 32,10 Z" fill="#C9A84C"/>
           </svg>
@@ -1136,16 +1521,16 @@
           <p class="emph">"You bring the vision. We build the operating system that makes it real."</p>
         </div>
 
-        <div class="role-card">
+        <div class="role-card reveal">
           <h4>A Fractional Chief of Staff Typically Owns</h4>
           <ul class="role-list">
             <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" style="color:var(--forest)"><path d="M5 13l4 4L19 7"/></svg> Weekly leadership briefings and priority management</li>
-            <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" style="color:var(--forest)"><path d="M5 13l4 4L19 7"/></svg> Cross-functional initiative tracking and accountability</li>
+            <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" style="color:var(--forest)"><path d="M5 13l4 4L19 7"/></svg> Cross-functional Initiative Execution and Alignment</li>
             <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" style="color:var(--forest)"><path d="M5 13l4 4L19 7"/></svg> Meeting facilitation and decision documentation</li>
-            <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" style="color:var(--forest)"><path d="M5 13l4 4L19 7"/></svg> Stakeholder and vendor relationship management</li>
-            <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" style="color:var(--forest)"><path d="M5 13l4 4L19 7"/></svg> KPI dashboard setup and monitoring</li>
+            <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" style="color:var(--forest)"><path d="M5 13l4 4L19 7"/></svg> Operational Optimization</li>
             <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" style="color:var(--forest)"><path d="M5 13l4 4L19 7"/></svg> Hiring support and onboarding coordination</li>
-            <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" style="color:var(--forest)"><path d="M5 13l4 4L19 7"/></svg> Board and investor reporting support</li>
+            <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" style="color:var(--forest)"><path d="M5 13l4 4L19 7"/></svg> Financial Workflows</li>
+            <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" style="color:var(--forest)"><path d="M5 13l4 4L19 7"/></svg> Dashboard and Reporting setup and monitoring</li>
           </ul>
           <p style="margin-top:16px;font-family:var(--serif);font-style:italic;font-size:14px;color:var(--sage);">And more.</p>
         </div>
@@ -1156,7 +1541,7 @@
   <!-- ================= BENEFITS / ROI ================= -->
   <section class="bg-parchment" id="benefits" style="padding:0;">
     <div class="wrap" style="padding-top:48px;">
-      <div class="section-head">
+      <div class="section-head reveal">
         <p class="eyebrow">A Fractional CoS Pays for Themselves</p>
         <h2>Benefits</h2>
         <p class="sub">A fractional Chief of Staff is not a cost — it's the thing standing between you and the cost of chaos you're already paying, and the cost of everything that's still waiting to get done.</p>
@@ -1164,7 +1549,7 @@
     </div>
 
     <div class="roi-grid">
-      <div class="roi-col left">
+      <div class="roi-col left reveal">
         <p class="eyebrow on-dark">The Math</p>
         <h3>What chaos — and inaction — are already costing you</h3>
         <div class="cost-counter">
@@ -1173,16 +1558,20 @@
         </div>
         <p>Every organization is already paying for its operational gaps — just not on an invoice. It shows up as missed revenue, staff turnover, founder burnout, and margin erosion nobody's tracking.</p>
         <div class="roi-scale">
+          <div class="roi-row"><span class="label">Dysfunctional operational workflows and financial tracking</span><span class="val">Revenue leakage, ongoing</span></div>
           <div class="roi-row"><span class="label">Founder time lost to firefighting</span><span class="val">Hours, weekly</span></div>
           <div class="roi-row"><span class="label">Staff turnover from unclear roles</span><span class="val">Rehire &amp; retrain cost</span></div>
+          <div class="roi-row"><span class="label">Tasks started but never finished</span><span class="val">Wasted effort, sunk cost</span></div>
+          <div class="roi-row"><span class="label">Misalignment between departments</span><span class="val">Duplicated &amp; conflicting work</span></div>
           <div class="roi-row"><span class="label">Margin erosion from untracked costs</span><span class="val">Compounding</span></div>
           <div class="roi-row"><span class="label">Full-time C-suite hire</span><span class="val">$150K–$250K+/yr</span></div>
           <div class="roi-row"><span class="label">Fractional CoS engagement</span><span class="val">A fraction of that</span></div>
         </div>
         <p style="margin-top:24px;font-size:13.5px;">None of this shows up as a single line item — which is exactly why it's so easy to ignore. Disarray is expensive precisely because it's diffuse: a little revenue lost here, a hire that didn't work out there, hours nobody logged spent redoing avoidable work. Left unaddressed, those small leaks compound into a real drag on growth and profitability.</p>
+        <a href="cost-savings.html" class="btn btn-gold" style="margin-top:16px;">See Real Examples of Where Organizations Lose Money</a>
       </div>
 
-      <div class="roi-col">
+      <div class="roi-col reveal">
         <p class="eyebrow on-dark">The Outcomes</p>
         <h3>What clients actually get</h3>
         <div class="benefit-list">
@@ -1192,7 +1581,15 @@
           </div>
           <div class="benefit-item">
             <div class="bicon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 13l4 4L19 7"/></svg></div>
-            <div><h4>Documented, repeatable systems</h4><p>SOPs and RACI charts that survive staff turnover instead of leaving with one key person.</p></div>
+            <div><h4>Strong Systems and Structures</h4><p>Resources that survive staff turnover instead of leaving with one key person.</p></div>
+          </div>
+          <div class="benefit-item">
+            <div class="bicon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 13l4 4L19 7"/></svg></div>
+            <div><h4>Sales and Growth Pipelines</h4><p>Optimized sales processes and integrated processes and structures.</p></div>
+          </div>
+          <div class="benefit-item">
+            <div class="bicon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 13l4 4L19 7"/></svg></div>
+            <div><h4>Strategic Initiatives and Plans</h4><p>Priorities that move from idea to execution — tracked and owned, not stalled in a slide deck.</p></div>
           </div>
           <div class="benefit-item">
             <div class="bicon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 13l4 4L19 7"/></svg></div>
@@ -1214,14 +1611,14 @@
   <!-- ================= FRACTIONAL VS CONSULTING ================= -->
   <section class="bg-white" id="fractional-vs-consulting">
     <div class="wrap">
-      <div class="section-head">
+      <div class="section-head reveal">
         <p class="eyebrow">Not Just Another Consultant</p>
         <h2>Integrated, not transactional</h2>
         <p class="sub">A traditional consultant studies your business from the outside. A fractional Chief of Staff becomes part of it — which changes what's actually possible to fix.</p>
       </div>
 
       <div class="compare-grid">
-        <div class="compare-col">
+        <div class="compare-col reveal">
           <h4 class="compare-head compare-head--con">The Traditional Consulting Model</h4>
           <ul class="compare-list">
             <li><span class="cicon cicon--con"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M6 6l12 12M18 6L6 18"/></svg></span>Parachutes in, delivers a report or slide deck, and moves on to the next client.</li>
@@ -1233,7 +1630,7 @@
           </ul>
         </div>
 
-        <div class="compare-col compare-col--slg">
+        <div class="compare-col compare-col--slg reveal">
           <h4 class="compare-head compare-head--slg">The SLG Approach</h4>
           <ul class="compare-list">
             <li><span class="cicon cicon--slg"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span>We stay embedded until the new system is actually working — accountable for the outcome, not just the recommendation.</li>
@@ -1250,33 +1647,55 @@
     </div>
   </section>
 
+  <!-- ================= WHY ORGANIZATIONS HIRE US ================= -->
+  <section class="bg-parchment">
+    <div class="wrap">
+      <div class="section-head reveal" style="margin-bottom:28px;">
+        <p class="eyebrow">The Trigger Point</p>
+        <h2 style="font-size:26px;">Organizations Typically Call Us When...</h2>
+      </div>
+      <div class="hire-triggers">
+        <div class="hire-trigger reveal">Growth has outpaced operations</div>
+        <div class="hire-trigger reveal">Leadership is overwhelmed</div>
+        <div class="hire-trigger reveal">Projects aren't getting finished</div>
+        <div class="hire-trigger reveal">Teams lack accountability</div>
+        <div class="hire-trigger reveal">Systems can't scale</div>
+        <div class="hire-trigger reveal">Operations feels disorganized</div>
+        <div class="hire-trigger reveal">You're losing money</div>
+        <div class="hire-trigger reveal">There's no visibility into what's actually happening</div>
+      </div>
+      <p class="trigger-closer reveal">Any of these are at play?</p>
+    </div>
+  </section>
+
   <!-- ================= SERVICES ================= -->
   <section class="bg-mist" id="services">
     <div class="wrap">
-      <div class="section-head">
+      <div class="section-head reveal">
         <p class="eyebrow">How We Help</p>
         <h2>Services</h2>
         <p class="sub">Operations consulting and operations solutions delivered two ways, built on the same core disciplines.</p>
       </div>
 
       <div class="offering-grid">
-        <div class="offering-card">
+        <div class="offering-card reveal">
           <svg class="oicon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="9" cy="7" r="4"/><path d="M2 21v-2a7 7 0 0 1 14 0v2"/><circle cx="17" cy="7" r="3"/><path d="M22 21v-2a6 6 0 0 0-4-5.65"/></svg>
           <p class="eyebrow">Ongoing Partnership</p>
           <h3>Fractional Chief of Staff</h3>
           <p>A part-time, embedded engagement where we operate as your strategic right hand — running point on priorities, cross-functional execution, and the systems your business needs to keep scaling. Retainer-based, typically a minimum of three months.</p>
           <ul class="offering-points">
             <li>Weekly leadership briefings &amp; priority management</li>
-            <li>Cross-functional initiative tracking &amp; accountability</li>
+            <li>Cross-functional Initiative Execution and Alignment</li>
             <li>Meeting facilitation &amp; decision documentation</li>
           </ul>
           <ul class="offering-points offering-more" id="cosMoreList">
-            <li>Stakeholder &amp; vendor relationship management</li>
+            <li>Operational Optimization</li>
             <li>KPI dashboards, financial tracking, &amp; reporting support</li>
             <li>Change management for every new system or process</li>
             <li>Organizational structure design &amp; RACI implementation</li>
             <li>Hiring support &amp; onboarding coordination</li>
-            <li>Board &amp; investor reporting support</li>
+            <li>Financial Workflows</li>
+            <li>Dashboard and Reporting setup and monitoring</li>
           </ul>
           <button type="button" class="see-more-toggle" id="cosMoreToggle" data-target="cosMoreList" aria-expanded="false">
             <span class="toggle-label">See more</span>
@@ -1285,7 +1704,7 @@
           <a href="#contact" class="btn btn-ghost btn-sm" style="margin-top:8px;">Book a discovery call</a>
         </div>
 
-        <div class="offering-card">
+        <div class="offering-card reveal">
           <svg class="oicon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
           <p class="eyebrow">Fixed-Scope Engagement</p>
           <h3>Implementation Project</h3>
@@ -1299,86 +1718,117 @@
         </div>
       </div>
 
-      <div class="section-head" style="margin-top:72px;margin-bottom:40px;">
+      <div class="section-head reveal" style="margin-top:72px;margin-bottom:40px;">
         <p class="eyebrow">Across Every Engagement</p>
         <h3 style="font-size:24px;">The core disciplines</h3>
         <p class="sub" style="font-size:15px;">No two engagements look the same. We take a custom approach for every client — working with your team to implement the systems, processes, and tools that fit your unique situation, not a one-size-fits-all package.</p>
       </div>
 
       <div class="services-grid">
-        <div class="service-card flagship">
-          <svg class="sicon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+        <div class="service-card flagship reveal">
+          <div class="icon-badge"><svg class="sicon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
             <g class="org-p1"><circle cx="9" cy="7" r="4"/><path d="M2 21v-2a7 7 0 0 1 14 0v2"/></g>
             <g class="org-p2"><circle cx="17" cy="7" r="3"/><path d="M22 21v-2a6 6 0 0 0-4-5.65"/></g>
-          </svg>
+          </svg></div>
           <h3>Organizational Structure &amp; Leadership Alignment</h3>
           <p>Team structure design and RACI implementation so every role, decision, and reporting line is clear — no more guessing who owns what.</p>
         </div>
-        <div class="service-card flagship">
-          <svg class="sicon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+        <div class="service-card flagship reveal">
+          <div class="icon-badge"><svg class="sicon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
             <path class="sales-line" d="M3 17l6-6 4 4 7-7"/>
             <path d="M14 8h7v7"/>
-          </svg>
+          </svg></div>
           <h3>Sales &amp; Growth Strategy</h3>
           <p>Go-to-market planning, revenue stream identification, and partnership development that turn growth ambitions into a pipeline you can actually execute.</p>
         </div>
-        <div class="service-card flagship">
-          <svg class="sicon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+        <div class="service-card flagship reveal">
+          <div class="icon-badge"><svg class="sicon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
             <rect class="opt-sq opt-sq-1" x="3" y="3" width="7" height="7"/>
             <rect class="opt-sq opt-sq-2" x="14" y="3" width="7" height="7"/>
             <rect class="opt-sq opt-sq-3" x="3" y="14" width="7" height="7"/>
             <rect class="opt-sq opt-sq-4" x="14" y="14" width="7" height="7"/>
-          </svg>
+          </svg></div>
           <h3>Operational Optimization</h3>
           <p>Process mapping, SOPs, and RACI charts that replace tribal knowledge with clarity anyone can follow.</p>
         </div>
-        <div class="service-card flagship">
-          <svg class="sicon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+        <div class="service-card flagship reveal">
+          <div class="icon-badge"><svg class="sicon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
             <path d="M3 3v18h18"/>
             <path class="fin-line" d="M7 15l4-5 3 3 5-7"/>
-          </svg>
+          </svg></div>
           <h3>Financial Tracking</h3>
           <p>Ongoing budget tracking, financial process design, and P&amp;L visibility that catches margin erosion before it compounds.</p>
         </div>
-        <div class="service-card flagship">
-          <svg class="sicon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+        <div class="service-card flagship reveal">
+          <div class="icon-badge"><svg class="sicon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
             <g class="gear-rotate"><path d="M12 2v4M12 18v4M4.9 4.9l2.8 2.8M16.3 16.3l2.8 2.8M2 12h4M18 12h4M4.9 19.1l2.8-2.8M16.3 7.7l2.8-2.8"/><circle cx="12" cy="12" r="4"/></g>
-          </svg>
+          </svg></div>
           <h3>Digital Transformations</h3>
           <p>Workflow audits, tool selection, and hands-on training in AI and automation that reduce administrative burden without adding complexity.</p>
         </div>
-        <div class="service-card flagship">
-          <svg class="sicon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+        <div class="service-card flagship reveal">
+          <div class="icon-badge"><svg class="sicon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
             <g class="change-rotate"><path d="M3 12a9 9 0 1 0 9-9"/><path d="M3 12h6M12 3v6"/><circle cx="12" cy="12" r="1.4" fill="currentColor" stroke="none"/></g>
-          </svg>
+          </svg></div>
           <h3>Change Management</h3>
           <p>Bringing your team along for every new system — because tools and process only work with real buy-in.</p>
         </div>
-        <div class="service-card flagship">
-          <svg class="sicon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+        <div class="service-card flagship reveal">
+          <div class="icon-badge"><svg class="sicon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
             <path d="M3 3v18h18"/>
             <rect class="bar bar-1" x="7" y="12" width="3" height="6"/>
             <rect class="bar bar-2" x="12" y="8" width="3" height="10"/>
             <rect class="bar bar-3" x="17" y="5" width="3" height="13"/>
-          </svg>
+          </svg></div>
           <h3>Dashboards &amp; Reporting</h3>
           <p>OKR and KPI systems, live dashboards, and board- or investor-ready reporting that keep everyone aligned on what matters and how it's tracked.</p>
+        </div>
+        <div class="service-card flagship reveal">
+          <div class="icon-badge"><svg class="sicon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+            <path class="resource-layer resource-layer-1" d="M12 2L2 7l10 5 10-5-10-5z"/>
+            <path class="resource-layer resource-layer-2" d="M2 17l10 5 10-5"/>
+            <path class="resource-layer resource-layer-3" d="M2 12l10 5 10-5"/>
+          </svg></div>
+          <h3>Resourcing</h3>
+          <p>Resource forecasting and hiring plans that show you who you need, and when — before the gap becomes a crisis.</p>
+        </div>
+        <div class="service-card flagship reveal">
+          <div class="icon-badge"><svg class="sicon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+            <circle class="dot-bounce dot-bounce-1" cx="5" cy="12" r="1.5" fill="currentColor" stroke="none"/>
+            <circle class="dot-bounce dot-bounce-2" cx="12" cy="12" r="1.5" fill="currentColor" stroke="none"/>
+            <circle class="dot-bounce dot-bounce-3" cx="19" cy="12" r="1.5" fill="currentColor" stroke="none"/>
+          </svg></div>
+          <h3>Other</h3>
+          <p>Every business is different. If it's operational and it's holding you back, chances are we've solved it before — ask us.</p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ================= FAQ ================= -->
-  <section class="bg-mist" id="faq">
+  <!-- ================= TESTIMONIAL ================= -->
+  <section class="bg-parchment testimonial-section">
     <div class="wrap">
-      <div class="section-head">
+      <div class="testimonial reveal">
+        <svg class="quote-mark" width="40" height="32" viewBox="0 0 40 32" fill="none" aria-hidden="true">
+          <path d="M0 32V19.6C0 8.4 6.8 1.6 17.2 0L19.2 4.8C12.4 6.4 8.8 10.4 8.4 15.6H17.2V32H0ZM22.8 32V19.6C22.8 8.4 29.6 1.6 40 0L42 4.8C35.2 6.4 31.6 10.4 31.2 15.6H40V32H22.8Z" fill="#C9A84C"/>
+        </svg>
+        <p class="testimonial-quote">The dashboards and financial reporting really opened my eyes to what was possible. The visibility allowed me to make better decisions and solutions were informed by actual data.</p>
+        <p class="testimonial-attr">Founder &amp; CEO<span>Professional services firm, Ottawa</span></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= FAQ ================= -->
+  <section class="bg-white" id="faq">
+    <div class="wrap">
+      <div class="section-head reveal">
         <p class="eyebrow">Common Questions</p>
         <h2>Frequently asked questions</h2>
         <p class="sub">Straight answers to the questions we hear most in discovery calls.</p>
       </div>
 
       <div id="faqList">
-        <div class="faq-item open">
+        <div class="faq-item open reveal">
           <button class="faq-q" aria-expanded="true">
             <span>Why a fractional Chief of Staff instead of hiring one full-time?</span>
             <svg class="chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
@@ -1386,7 +1836,7 @@
           <div class="faq-a"><div class="faq-a-inner">Most growing organizations need senior operational judgment long before they need — or can budget for — a full-time executive. A fractional CoS gives you that judgment now, at a fraction of the cost, without the recruitment risk or the months it takes a new hire to get up to speed.</div></div>
         </div>
 
-        <div class="faq-item">
+        <div class="faq-item reveal">
           <button class="faq-q" aria-expanded="false">
             <span>What does a fractional Chief of Staff actually do, day to day?</span>
             <svg class="chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
@@ -1394,7 +1844,7 @@
           <div class="faq-a"><div class="faq-a-inner">The work centers on execution, alignment, and follow-through: driving strategic initiatives across teams, supporting your priorities and meeting prep, keeping communication from getting siloed as you grow, coordinating cross-functional projects so nothing stalls for lack of an owner, and building the systems and cadences that make all of that repeatable. Beyond the day-to-day, a fractional Chief of Staff brings a wealth of experience from working across departments and industries — the kind of pattern recognition you only get from having seen what works (and what doesn't) in businesses very different from your own. That means best practices aren't theoretical; they've been applied elsewhere, adapted, and proven, and we know how to bring them into your organization in a way that actually fits.</div></div>
         </div>
 
-        <div class="faq-item">
+        <div class="faq-item reveal">
           <button class="faq-q" aria-expanded="false">
             <span>How is this different from hiring a consultant?</span>
             <svg class="chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
@@ -1402,7 +1852,7 @@
           <div class="faq-a"><div class="faq-a-inner">Consultants typically hand you a report and move on. A fractional Chief of Staff is embedded in the work — accountable for outcomes, not just recommendations. We stay until the new system is actually running, not just written down.</div></div>
         </div>
 
-        <div class="faq-item">
+        <div class="faq-item reveal">
           <button class="faq-q" aria-expanded="false">
             <span>What size or stage of organization is this right for?</span>
             <svg class="chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
@@ -1414,7 +1864,7 @@
           </div></div>
         </div>
 
-        <div class="faq-item">
+        <div class="faq-item reveal">
           <button class="faq-q" aria-expanded="false">
             <span>What are the clearest signs it's time to bring one on?</span>
             <svg class="chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
@@ -1437,7 +1887,7 @@
           </div></div>
         </div>
 
-        <div class="faq-item">
+        <div class="faq-item reveal">
           <button class="faq-q" aria-expanded="false">
             <span>Can you really give us your full attention if you're working with other clients too?</span>
             <svg class="chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
@@ -1445,7 +1895,7 @@
           <div class="faq-a"><div class="faq-a-inner">Yes — that's the nature of the fractional model, and it's part of the value. Engagements are scoped based on the number of hours and days each week that you need. The time you're paying for is fully dedicated to you. What you gain in return is judgment sharpened across multiple businesses, the experience of best practices from other industries, and the dedication of a full-time hire — without the full-time cost.</div></div>
         </div>
 
-        <div class="faq-item">
+        <div class="faq-item reveal">
           <button class="faq-q" aria-expanded="false">
             <span>What's the minimum commitment?</span>
             <svg class="chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
@@ -1453,7 +1903,7 @@
           <div class="faq-a"><div class="faq-a-inner">Retainers run a minimum of three months, since real operational change needs runway. If you're not ready for an ongoing retainer, a fixed-fee sprint is a lower-risk way to see how we work together first.</div></div>
         </div>
 
-        <div class="faq-item">
+        <div class="faq-item reveal">
           <button class="faq-q" aria-expanded="false">
             <span>Do you work with non-profits and associations, or just for-profit businesses?</span>
             <svg class="chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
@@ -1461,7 +1911,7 @@
           <div class="faq-a"><div class="faq-a-inner">Both. The same operational gaps — unclear roles, informal processes, stretched leadership — show up across businesses, non-profits, and associations. We adapt scope and language to your sector, not the other way around.</div></div>
         </div>
 
-        <div class="faq-item">
+        <div class="faq-item reveal">
           <button class="faq-q" aria-expanded="false">
             <span>How quickly will we see results?</span>
             <svg class="chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
@@ -1475,14 +1925,14 @@
   <!-- ================= CONTACT / BOOKING ================= -->
   <section class="contact-section" id="contact">
     <div class="wrap">
-      <div class="section-head">
+      <div class="section-head reveal">
         <p class="eyebrow on-dark">Let's Talk</p>
         <h2>Book a discovery call</h2>
         <p class="sub">30 minutes, no obligation, no slide deck — just a straight conversation about what's going on in your business.</p>
       </div>
 
       <div class="contact-grid">
-        <div class="booking-card">
+        <div class="booking-card reveal">
           <h3>Pick a time that works</h3>
           <p>The fastest way to get started is to grab a slot directly on the calendar below.</p>
           <ul class="booking-steps">
@@ -1554,6 +2004,47 @@
 </footer>
 
 <script>
+  // Subtle parallax on the hero background — adds depth without being distracting
+  (function heroParallax(){
+    const bg = document.querySelector('.hero-bg');
+    if (!bg) return;
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduceMotion) return;
+    let ticking = false;
+    function update(){
+      const y = window.scrollY;
+      if (y < 900){
+        bg.style.transform = `translateY(${y * 0.12}px)`;
+      }
+      ticking = false;
+    }
+    window.addEventListener('scroll', () => {
+      if (!ticking){
+        requestAnimationFrame(update);
+        ticking = true;
+      }
+    }, { passive: true });
+  })();
+
+  // Scroll reveal: fade/slide elements in once, as they enter the viewport
+  (function scrollReveal(){
+    const targets = document.querySelectorAll('.reveal');
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduceMotion || !('IntersectionObserver' in window)){
+      targets.forEach(t => t.classList.add('is-visible'));
+      return;
+    }
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting){
+          entry.target.classList.add('is-visible');
+          io.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+    targets.forEach(t => io.observe(t));
+  })();
+
   // Mobile nav toggle
   const menuToggle = document.getElementById('menuToggle');
   const navLinks = document.getElementById('navLinks');
@@ -1657,133 +2148,6 @@
         submitBtn.textContent = 'Send & Request a Call';
       });
   });
-
-  // Signature visual: a building rising floor by floor, from the ground up
-  (function buildTower(){
-    const svg = document.getElementById('chaosSvg');
-    const nodesLayer = document.getElementById('nodesLayer');
-    const linesLayer = document.getElementById('linesLayer');
-
-    const buildingW = 140, floorH = 48, floorCount = 5;
-    const groundY = 340;
-    const cx = 210;
-    const bx = cx - buildingW / 2; // building left edge
-
-    // static foundation line — the "ground" this gets built on
-    const ground = document.createElementNS('http://www.w3.org/2000/svg','line');
-    ground.setAttribute('x1', 90); ground.setAttribute('x2', 330);
-    ground.setAttribute('y1', groundY + 4); ground.setAttribute('y2', groundY + 4);
-    ground.setAttribute('stroke', '#C9A84C');
-    ground.setAttribute('stroke-width', '1.5');
-    ground.setAttribute('opacity', '0.55');
-    linesLayer.appendChild(ground);
-
-    // floors, bottom to top
-    const floors = [];
-    for (let r = 0; r < floorCount; r++){
-      const yTop = groundY - (r + 1) * floorH;
-      floors.push({ row: r, y: yTop, top: r === floorCount - 1 });
-    }
-
-    const floorEls = floors.map(f => {
-      const rect = document.createElementNS('http://www.w3.org/2000/svg','rect');
-      rect.setAttribute('x', bx);
-      rect.setAttribute('width', buildingW);
-      rect.setAttribute('height', floorH);
-      rect.setAttribute('fill', '#28785E');
-      rect.setAttribute('stroke', '#FCFEFC');
-      rect.setAttribute('stroke-width', '1');
-      // starts below the ground, invisible — rises up into place
-      rect.setAttribute('y', f.y + 60);
-      rect.setAttribute('opacity', '0');
-      nodesLayer.appendChild(rect);
-      return rect;
-    });
-
-    // three windows per floor
-    const winW = 14, winH = 18;
-    const winGap = (buildingW - 40 - winW * 3) / 2;
-    const windowEls = [];
-    floors.forEach((f, idx) => {
-      for (let i = 0; i < 3; i++){
-        const win = document.createElementNS('http://www.w3.org/2000/svg','rect');
-        const wx = bx + 20 + i * (winW + winGap);
-        win.setAttribute('x', wx);
-        win.setAttribute('width', winW);
-        win.setAttribute('height', winH);
-        win.setAttribute('rx', 1.5);
-        win.setAttribute('fill', f.top ? '#C9A84C' : '#FCFEFC');
-        win.setAttribute('y', f.y + (floorH - winH) / 2 + 60);
-        win.setAttribute('opacity', '0');
-        nodesLayer.appendChild(win);
-        windowEls.push({ el: win, floorRow: idx, finalY: f.y + (floorH - winH) / 2 });
-      }
-    });
-
-    // rooftop antenna, drawn last
-    const antenna = document.createElementNS('http://www.w3.org/2000/svg','line');
-    const topY = floors[floors.length - 1].y;
-    antenna.setAttribute('x1', cx); antenna.setAttribute('x2', cx);
-    antenna.setAttribute('y1', topY); antenna.setAttribute('y2', topY);
-    antenna.setAttribute('stroke', '#C9A84C');
-    antenna.setAttribute('stroke-width', '2');
-    antenna.setAttribute('opacity', '0.9');
-    linesLayer.appendChild(antenna);
-
-    const beacon = document.createElementNS('http://www.w3.org/2000/svg','circle');
-    beacon.setAttribute('cx', cx); beacon.setAttribute('cy', topY - 26);
-    beacon.setAttribute('r', 4);
-    beacon.setAttribute('fill', '#C9A84C');
-    beacon.setAttribute('opacity', '0');
-    nodesLayer.appendChild(beacon);
-
-    function build(){
-      floors.forEach((f, idx) => {
-        const rect = floorEls[idx];
-        const delay = idx * 280;
-        setTimeout(() => {
-          rect.style.transition = 'y .55s cubic-bezier(.22,.9,.3,1), opacity .4s ease';
-          rect.setAttribute('y', f.y);
-          rect.setAttribute('opacity', '1');
-        }, delay);
-      });
-      windowEls.forEach(w => {
-        const delay = w.floorRow * 280 + 260;
-        setTimeout(() => {
-          w.el.style.transition = 'y .4s ease, opacity .4s ease';
-          w.el.setAttribute('y', w.finalY);
-          w.el.setAttribute('opacity', '1');
-        }, delay);
-      });
-      const finishDelay = floorCount * 280 + 200;
-      setTimeout(() => {
-        antenna.style.transition = 'y1 .5s ease';
-        antenna.setAttribute('y1', topY - 30);
-        setTimeout(() => {
-          beacon.style.transition = 'opacity .4s ease';
-          beacon.setAttribute('opacity', '1');
-        }, 400);
-      }, finishDelay);
-    }
-
-    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (reduceMotion){
-      floors.forEach((f, idx) => { floorEls[idx].setAttribute('y', f.y); floorEls[idx].setAttribute('opacity', '1'); });
-      windowEls.forEach(w => { w.el.setAttribute('y', w.finalY); w.el.setAttribute('opacity', '1'); });
-      antenna.setAttribute('y1', topY - 30);
-      beacon.setAttribute('opacity', '1');
-    } else {
-      const io = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting){
-            setTimeout(build, 300);
-            io.disconnect();
-          }
-        });
-      }, {threshold: 0.4});
-      io.observe(svg);
-    }
-  })();
 
   // Animated cost counter: cycles up and down through a sequence of numbers, continuously
   (function animateCostCounter(){
