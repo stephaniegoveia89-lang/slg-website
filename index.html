@@ -773,14 +773,15 @@
     gap:0;
   }
   .roi-row{
-    display:flex; justify-content:space-between; align-items:center;
+    display:flex; justify-content:space-between; align-items:flex-start;
+    gap:20px;
     padding:16px 0;
     border-bottom:1px solid rgba(252,254,252,0.15);
     font-size:14px;
   }
   .roi-row:first-child{ padding-top:0; }
-  .roi-row span.label{ color:rgba(252,254,252,0.7); }
-  .roi-row span.val{ font-family:var(--serif); color:var(--warm-gold); font-size:16px; }
+  .roi-row span.label{ color:rgba(252,254,252,0.7); flex:1; line-height:1.5; padding-top:2px; }
+  .roi-row span.val{ font-family:var(--serif); color:var(--warm-gold); font-size:16px; white-space:nowrap; flex-shrink:0; }
 
   .benefit-list{ display:flex; flex-direction:column; gap:22px; }
   .benefit-item{ display:flex; gap:16px; }
