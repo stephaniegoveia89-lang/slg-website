@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chief of Staff Impact Calculator | SLG Solutions</title>
+<meta name="description" content="Quantify the realistic financial impact a Chief of Staff can have on your organization. Built by SLG Solutions.">
+<style>
+/* ── Brand Tokens ── */
+:root {
+  --forest: #28785E;
+  --deep-forest: #1A5240;
+  --ivory: #FCFEFC;
+  --gold: #C9A84C;
+  --warm-gold: #E2C97A;
+  --mist: #E8F4F0;
+  --parchment: #FDF6E3;
+  --charcoal: #1E2B27;
+  --sage: #5A7068;
+  --white: #FFFFFF;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  background: var(--ivory);
+  color: var(--charcoal);
+  min-height: 100vh;
+}
+
+/* ── Header ── */
+.header {
+  background: linear-gradient(155deg, var(--deep-forest) 0%, var(--forest) 60%, #2f8a6a 100%);
+  padding: 36px 28px 32px;
+  text-align: center;
+}
+.logo-area {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  margin-bottom: 20px;
+}
+.logo-mark {
+  width: 48px; height: 48px;
+  border: 2px solid var(--gold);
+  border-radius: 4px;
+  display: flex; align-items: center; justify-content: center;
+}
+.logo-letters {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 18px; font-weight: 700;
+  color: var(--gold); letter-spacing: 0.1em;
+}
+.logo-text { display: flex; flex-direction: column; align-items: flex-start; }
+.logo-name {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 20px; font-weight: 400; color: var(--white);
+}
+.logo-tagline {
+  font-size: 9px; font-weight: 500;
+  color: var(--warm-gold); letter-spacing: 0.14em; margin-top: 2px;
+}
+.header h1 {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: clamp(22px, 3.5vw, 32px);
+  font-weight: 300; color: var(--white); letter-spacing: -0.01em;
+}
+.header .subtitle {
+  color: rgba(255,255,255,0.6);
+  font-size: 14px; margin-top: 10px;
+  max-width: 560px; margin-left: auto; margin-right: auto; line-height: 1.55;
+}
+
+/* ── Disclaimer ── */
+.disclaimer {
+  max-width: 1100px; margin: 20px auto 0; padding: 16px 24px;
+  background: var(--parchment); border-radius: 8px;
+  font-size: 13px; line-height: 1.65; color: var(--sage);
+  border-left: 3px solid var(--gold);
+}
+
+/* ── Layout ── */
+.layout {
+  display: flex; gap: 24px; max-width: 1100px;
+  margin: 0 auto; padding: 24px 20px 40px; flex-wrap: wrap;
+}
+
+/* ── Input Panel ── */
+.input-panel {
+  flex: 1 1 300px; min-width: 280px; max-width: 360px;
+  background: var(--white); border-radius: 10px; padding: 24px 22px;
+  box-shadow: 0 1px 4px rgba(30,43,39,0.07); align-self: flex-start;
+}
+.panel-title {
+  font-family: Georgia, serif; font-size: 17px; font-weight: 400;
+  margin: 0 0 18px; color: var(--deep-forest);
+  border-bottom: 1px solid var(--mist); padding-bottom: 12px;
+}
+.input-group { margin-bottom: 18px; }
+.input-group label {
+  display: block; font-size: 12px; font-weight: 600;
+  color: var(--charcoal); margin-bottom: 3px; letter-spacing: 0.01em;
+}
+.input-group .hint {
+  display: block; font-size: 11px; color: var(--sage); margin-bottom: 3px;
+}
+.input-wrap { position: relative; }
+.input-wrap input {
+  width: 100%; padding: 9px 14px; font-size: 15px;
+  font-family: Arial, sans-serif;
+  border: 1.5px solid #cdd8d3; border-radius: 6px;
+  background: var(--ivory); color: var(--charcoal); outline: none;
+}
+.input-wrap input:focus { border-color: var(--forest); }
+.input-wrap .prefix, .input-wrap .suffix {
+  position: absolute; top: 50%; transform: translateY(-50%); pointer-events: none;
+}
+.input-wrap .prefix { left: 10px; font-size: 14px; color: var(--sage); }
+.input-wrap .suffix { right: 10px; font-size: 12px; color: var(--sage); }
+
+/* ── CTA ── */
+.cta-box {
+  margin-top: 24px; padding: 16px; background: var(--mist);
+  border-radius: 8px; text-align: center;
+}
+.cta-box p { margin: 0 0 10px; font-size: 13px; color: var(--charcoal); line-height: 1.5; }
+.cta-btn {
+  display: inline-block; padding: 10px 22px;
+  background: var(--forest); color: var(--white);
+  border-radius: 6px; font-size: 13px; font-weight: 600;
+  text-decoration: none; letter-spacing: 0.02em;
+}
+.cta-btn:hover { background: var(--deep-forest); }
+
+/* ── Results Panel ── */
+.results-panel { flex: 1.8 1 420px; min-width: 340px; }
+.total-box {
+  background: linear-gradient(155deg, var(--deep-forest) 0%, var(--forest) 60%, #2f8a6a 100%);
+  border-radius: 10px; padding: 32px 24px; text-align: center; margin-bottom: 16px;
+}
+.total-label {
+  display: block; color: rgba(255,255,255,0.6);
+  font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.12em;
+}
+.total-value {
+  display: block; font-family: Georgia, serif;
+  font-size: clamp(34px, 5.5vw, 50px); font-weight: 300;
+  color: var(--gold); margin-top: 6px; letter-spacing: -0.02em;
+}
+.total-note {
+  display: block; color: rgba(255,255,255,0.4);
+  font-size: 11px; margin-top: 8px;
+}
+
+/* ── Cards ── */
+.cards { display: flex; flex-direction: column; gap: 10px; }
+.card {
+  background: var(--white); border-radius: 8px; padding: 14px 18px;
+  box-shadow: 0 1px 4px rgba(30,43,39,0.06); position: relative;
+}
+.card-header {
+  display: flex; justify-content: space-between; align-items: center;
+  cursor: pointer; user-select: none;
+}
+.card-header .left { display: flex; align-items: center; gap: 10px; }
+.card-header .icon { font-size: 20px; }
+.card-header .title-text { font-size: 14px; font-weight: 600; color: var(--charcoal); }
+.card-header .right { display: flex; align-items: center; gap: 12px; }
+.card-amount {
+  font-size: 17px; font-weight: 700;
+  font-family: Georgia, serif; color: var(--deep-forest);
+}
+.chevron {
+  font-size: 13px; color: var(--sage);
+  transition: transform 0.2s; display: inline-block;
+}
+.chevron.open { transform: rotate(180deg); }
+
+/* ── Remove buttons ── */
+.remove-btn {
+  position: absolute; top: 8px; right: 8px;
+  width: 22px; height: 22px; border: none; background: transparent;
+  color: var(--sage); font-size: 13px; cursor: pointer; border-radius: 4px;
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0.5; transition: opacity 0.2s;
+}
+.remove-btn:hover { opacity: 1; }
+.remove-item-btn {
+  flex-shrink: 0; width: 20px; height: 20px; border: none;
+  background: transparent; color: var(--sage); font-size: 11px;
+  cursor: pointer; border-radius: 3px;
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0.4; transition: opacity 0.2s; margin-left: 8px;
+}
+.remove-item-btn:hover { opacity: 1; }
+.restore-btn {
+  padding: 10px 16px; background: var(--mist);
+  border: 1px solid #cdd8d3; border-radius: 8px;
+  font-size: 13px; color: var(--forest); cursor: pointer;
+  font-weight: 600; text-align: center; width: 100%;
+}
+.restore-btn:hover { background: #d5ebe3; }
+.restore-btn.small { margin-top: 8px; font-size: 12px; padding: 6px 12px; }
+
+/* ── Expanded Content ── */
+.expanded { margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--mist); }
+.section-block { margin-bottom: 16px; padding-bottom: 14px; border-bottom: 1px dashed #d5e3dc; }
+.section-block:last-child { margin-bottom: 0; border-bottom: none; padding-bottom: 0; }
+.section-heading {
+  font-size: 10.5px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.1em; color: var(--deep-forest); margin: 0 0 8px;
+}
+.body-text { font-size: 13px; line-height: 1.7; color: var(--sage); margin: 0; }
+.breakdown-row {
+  display: flex; justify-content: space-between; align-items: flex-start;
+  padding: 7px 0; font-size: 12.5px; color: var(--sage);
+  border-bottom: 1px solid var(--mist); gap: 16px;
+}
+.breakdown-label { flex: 1; line-height: 1.55; }
+.breakdown-val {
+  font-weight: 700; color: var(--deep-forest); white-space: nowrap;
+  font-family: Georgia, serif; font-size: 13px;
+}
+
+/* ── Caveat ── */
+.caveat {
+  margin-top: 16px; padding: 16px 20px; background: var(--mist);
+  border-radius: 8px; font-size: 12.5px; line-height: 1.65; color: var(--sage);
+}
+
+/* ── Footer ── */
+.footer {
+  background: var(--deep-forest); padding: 24px 20px; text-align: center;
+  display: flex; flex-direction: column; align-items: center; gap: 4px;
+}
+.footer-logo { font-family: Georgia, serif; font-size: 16px; color: var(--white); letter-spacing: 0.04em; }
+.footer-tag { font-size: 10px; color: var(--warm-gold); letter-spacing: 0.08em; }
+.footer a { font-size: 12px; color: rgba(255,255,255,0.5); text-decoration: none; margin-top: 4px; }
+.footer a:hover { color: rgba(255,255,255,0.8); }
+
+/* ── Responsive ── */
+@media (max-width: 720px) {
+  .layout { flex-direction: column; }
+  .input-panel { max-width: 100%; }
+}
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="logo-area">
+    <div class="logo-mark"><span class="logo-letters">SLG</span></div>
+    <div class="logo-text">
+      <span class="logo-name">SLG Solutions</span>
+      <span class="logo-tagline">STRATEGY · LEADERSHIP · GROWTH</span>
+    </div>
+  </div>
+  <h1>Chief of Staff Impact Calculator</h1>
+  <p class="subtitle">Understand the realistic, quantifiable financial impact a Chief of Staff can have on your organization.</p>
+</header>
+
+<div class="disclaimer">
+  The estimates below are drawn from real-world experience across organizations of different sizes, industries, and stages of growth. Your actual results will depend on your company's revenue, profit margins, existing systems and processes, team structure, and organizational maturity. Every assumption in this calculator is deliberately conservative — these figures represent a floor, not a ceiling. The compounding effects of faster decisions, stronger alignment, and better systems are where the real ROI lives, but are harder to pin to a single number.
+</div>
+
+<div class="layout">
+  <!-- INPUT PANEL -->
+  <div class="input-panel">
+    <h2 class="panel-title">Your Organization</h2>
+
+    <div class="input-group">
+      <label>Number of Staff</label>
+      <div class="input-wrap"><input type="number" id="staff" value="23" min="1" max="500"></div>
+    </div>
+    <div class="input-group">
+      <label>Number of Directors</label>
+      <div class="input-wrap"><input type="number" id="directors" value="7" min="1" max="50"></div>
+    </div>
+    <div class="input-group">
+      <label>CEO Annual Compensation</label>
+      <div class="input-wrap">
+        <span class="prefix">$</span>
+        <input type="number" id="ceoComp" value="500000" step="10000" style="padding-left:28px">
+      </div>
+    </div>
+    <div class="input-group">
+      <label>Avg. Director Hourly Rate</label>
+      <div class="input-wrap">
+        <span class="prefix">$</span>
+        <input type="number" id="directorRate" value="75" style="padding-left:28px;padding-right:44px">
+        <span class="suffix">/hr</span>
+      </div>
+    </div>
+    <div class="input-group">
+      <label>Avg. Staff Hourly Rate</label>
+      <div class="input-wrap">
+        <span class="prefix">$</span>
+        <input type="number" id="staffRate" value="40" style="padding-left:28px;padding-right:44px">
+        <span class="suffix">/hr</span>
+      </div>
+    </div>
+    <div class="input-group">
+      <label>Decisions per Month</label>
+      <span class="hint">How many require CEO input</span>
+      <div class="input-wrap"><input type="number" id="stalledDecisions" value="12" min="1" max="50"></div>
+    </div>
+    <div class="input-group">
+      <label>Leadership Meetings / Week</label>
+      <div class="input-wrap"><input type="number" id="meetingsPerWeek" value="15" min="1" max="60"></div>
+    </div>
+    <div class="input-group">
+      <label>Active Projects</label>
+      <div class="input-wrap"><input type="number" id="activeProjects" value="9" min="1" max="50"></div>
+    </div>
+
+    <div class="cta-box">
+      <p>Want to discuss what these numbers look like for your organization?</p>
+      <a class="cta-btn" href="https://calendly.com/stephaniegoveia89/diagnostic-evaluation" target="_blank" rel="noopener noreferrer">Book a Discovery Call</a>
+    </div>
+  </div>
+
+  <!-- RESULTS PANEL -->
+  <div class="results-panel">
+    <div class="total-box">
+      <span class="total-label">Estimated Annual Impact</span>
+      <span class="total-value" id="totalValue">$0</span>
+      <span class="total-note">Conservative floor estimate · Click each category for details</span>
+    </div>
+
+    <div class="cards" id="cardsContainer"></div>
+
+    <div id="restoreAllContainer" style="display:none;margin-top:10px">
+      <button class="restore-btn" onclick="restoreAll()">Restore all removed categories</button>
+    </div>
+
+    <div class="caveat">
+      <strong>A note on methodology:</strong> Every assumption in this calculator is stacked conservatively. Productivity losses are set at just 10% when real-world impact is often significantly higher. Time savings are capped well below what most organizations experience. Downstream effects on teams below the director level are excluded entirely. Compounding costs — where one delayed decision cascades into three more — are not modeled. The actual organizational cost of the problems a Chief of Staff solves is almost certainly a multiple of what you see above.
+    </div>
+  </div>
+</div>
+
+<footer class="footer">
+  <span class="footer-logo">SLG Solutions</span>
+  <span class="footer-tag">Strategy · Leadership · Growth</span>
+  <a href="https://solutionsslg.com" target="_blank" rel="noopener noreferrer">solutionsslg.com</a>
+</footer>
+
+<script>
+// ── State ──
+const hiddenCategories = new Set();
+const hiddenItems = new Set();
+
+const inputs = ['staff','directors','ceoComp','directorRate','staffRate','stalledDecisions','meetingsPerWeek','activeProjects'];
+function val(id) { return Number(document.getElementById(id).value) || 0; }
+function fmt(n) { return '$' + Math.round(n).toLocaleString(); }
+
+// ── Animated counter ──
+const animState = {};
+function animateTo(el, target) {
+  const id = el.id || el.dataset.key;
+  if (animState[id]) cancelAnimationFrame(animState[id].raf);
+  const start = animState[id]?.current ?? target;
+  const startTime = performance.now();
+  animState[id] = { current: start };
+  function tick(ts) {
+    const p = Math.min((ts - startTime) / 500, 1);
+    const eased = 1 - Math.pow(1 - p, 3);
+    const v = Math.round(start + (target - start) * eased);
+    animState[id].current = v;
+    el.textContent = '$' + v.toLocaleString();
+    if (p < 1) animState[id].raf = requestAnimationFrame(tick);
+  }
+  animState[id].raf = requestAnimationFrame(tick);
+}
+
+// ── Category definitions ──
+function getCategories() {
+  const staff = val('staff'), directors = val('directors'), ceoComp = val('ceoComp');
+  const directorRate = val('directorRate'), staffRate = val('staffRate');
+  const stalledDecisions = val('stalledDecisions'), meetingsPerWeek = val('meetingsPerWeek');
+  const activeProjects = val('activeProjects');
+
+  // 1. Decision Velocity
+  const daysSaved = 3, prodLoss = 0.10, hoursPerDay = 8;
+  const stalledPerMonth = Math.min(stalledDecisions, 5);
+  const perDirPerDecision = directorRate * hoursPerDay * daysSaved * prodLoss;
+  const decisionMonthly = perDirPerDecision * stalledPerMonth * directors;
+  const decisionAnnual = decisionMonthly * 12;
+
+  // 2. Misalignment
+  const meetingPriHrs = Math.min(meetingsPerWeek * 1.5, 50) * 4.33;
+  const meetingPriSavings = meetingPriHrs * directorRate * 12;
+  const meetingsPerMonth = meetingsPerWeek * 4.33;
+  const meetToDecHrs = meetingsPerMonth * 0.2 * directors;
+  const meetToDecSavings = meetToDecHrs * directorRate * 12;
+  const alignHrs = directors * 5;
+  const alignSavings = alignHrs * directorRate * 12;
+  const crossFuncHrs = directors * 4;
+  const crossFuncSavings = crossFuncHrs * directorRate * 12;
+
+  // 3. CEO Time Protection
+  const ceoHourly = ceoComp / 2000;
+  const ceoHrsWeek = 10;
+  const ceoAnnual = ceoHourly * ceoHrsWeek * 52;
+
+  // 4. Operational Optimization
+  const finInfra = (directors * 5 * directorRate + 3 * 6 * staffRate) * 0.65 * 12;
+  const projMgmt = (20 * staffRate + 10 * directorRate) * (activeProjects / 9) * 0.5 * 4.33 * 12 + 30000 * (activeProjects / 9);
+  const infoArch = (staff * 2 * staffRate + directors * 1 * directorRate) * 0.5 * 4.33 * 12;
+  const dashboards = directors * 3 * directorRate * 12;
+  const resourceAlloc = staff * 2 * staffRate * 0.05 * 4.33 * 12 + 15000;
+
+  return [
+    {
+      id: 'decision', title: 'Decision Velocity', icon: '⚡', accent: '#28785E',
+      annual: Math.round(decisionAnnual),
+      description: 'Most executives don\'t have a decision-making problem — they have a prioritization and context problem. When a decision sits waiting for three days because nobody has synthesized the relevant inputs, every director downstream of that decision loses productive momentum. A Chief of Staff sees everything awaiting your attention, knows which decisions are highest priority, which can be delegated, and which can wait. They pre-load the context you need, align stakeholders in advance, and eliminate the meetings that only existed because nobody had pulled the information together. The result: the time between "this needs a decision" and "here\'s what we\'re doing" collapses dramatically.',
+      breakdown: [
+        { label: 'Per director, per stalled decision (' + daysSaved + ' days × ' + hoursPerDay + ' hrs × $' + directorRate + '/hr × 10% productivity loss)', value: perDirPerDecision },
+        { label: 'Monthly impact across ' + directors + ' directors on ' + stalledPerMonth + ' stalled decisions', value: decisionMonthly },
+        { label: 'Total annualized savings from increased decision velocity', value: decisionAnnual },
+      ],
+      assumptions: 'This estimate assumes directors lose only 10% of their productivity when blocked — meaning they nearly always find meaningful fallback work. It caps stalled decisions at 5 per month, even if your organization makes more. It also assumes a conservative 3-day reduction in decision turnaround time. In practice, many organizations see stalled decisions sit for a week or more, productivity losses regularly exceed 10%, and downstream teams — not just directors — are affected by the delay.',
+      beyondTheNumbers: 'Delayed decisions don\'t just cost hours — they compound. A product launch that slips two weeks because of one unresolved decision affects timelines, market timing, resourcing, and team morale. A hiring decision that takes three weeks longer than it should means lost candidates and extended strain on the existing team. The real cost of slow decisions is the opportunities that quietly pass you by while everyone waits.',
+    },
+    {
+      id: 'misalign', title: 'Misalignment Costs', icon: '🎯', accent: '#C9A84C',
+      removableItems: true,
+      description: 'Organizational misalignment is one of the most expensive problems you\'ll never see on a balance sheet. It shows up when teams leave meetings without clear owners or deadlines. When ten people are quietly operating off ten different versions of what they think matters most. When two departments solve the same problem in parallel without knowing it. A Chief of Staff builds the connective tissue that prevents this: structured agendas that drive decisions, decision logs that create accountability, follow-up tracking that ensures execution, and planning cadences that keep the entire organization pointed in the same direction.',
+      breakdown: [
+        { itemId: 'm_pri', label: 'Meeting prioritization — identifying when a full leadership meeting is necessary vs. when a focused one-on-one or smaller group achieves the same outcome faster', value: meetingPriSavings },
+        { itemId: 'm_dec', label: 'Turning meetings into decisions — every unstructured meeting costs each director ~12 minutes in pre-meeting context chasing and post-meeting clarification. Across ' + Math.round(meetingsPerMonth) + ' meetings/month and ' + directors + ' directors, a CoS eliminates that per-meeting tax entirely', value: meetToDecSavings },
+        { itemId: 'm_align', label: 'Making priorities visible and binding — establishing quarterly planning cadences, resource allocation frameworks, and regular reviews that prevent hundreds of hours being invested in work that doesn\'t align with strategy', value: alignSavings },
+        { itemId: 'm_cross', label: 'Reducing cross-functional friction — identifying where handoffs are breaking down, where approvals are bottlenecking, and where teams are duplicating effort, then building the coordination structures to keep work flowing', value: crossFuncSavings },
+      ],
+      assumptions: 'These figures use conservative hourly estimates and assume only a partial reduction in wasted time — not full elimination. Meeting prioritization savings are capped at 50 hours per week. The "meetings into decisions" calculation assumes each unstructured meeting costs every attending director just 12 minutes in context chasing before and clarification after — well below real-world estimates. It also only counts the directors who need to be there; it doesn\'t account for the time wasted by directors who didn\'t need to attend at all. Alignment savings assume each director currently spends only 5 hours per month working on misaligned priorities. In most organizations, these numbers are significantly higher.',
+      beyondTheNumbers: 'The compounding effects of alignment are where the real value lives. When your team is genuinely aligned — not just nodding in a room, but operating from the same playbook — entire categories of problems disappear. You stop having meetings about meetings. Strategic initiatives actually reach completion. Your best people stay because they can see their work matters. One person doing this coordination well can effectively double the output of an entire executive team.',
+    },
+    {
+      id: 'ceo', title: 'CEO Time Protection', icon: '🛡️', accent: '#1A5240',
+      annual: Math.round(ceoAnnual),
+      description: 'Your time as CEO is your organization\'s most constrained and highest-value resource. In any given month, a Chief of Staff will answer the operational questions that would have otherwise gone up to you, sit in meetings you don\'t need to attend and deliver a five-minute summary instead of a sixty-minute calendar block, prep briefing docs so you walk into every room ready to decide rather than ready to learn, run interference on "quick questions" that are never quick, and triage inbound requests so only the highest-leverage commitments reach your calendar. At your compensation level, even ' + ceoHrsWeek + ' hours per week reclaimed represents ' + fmt(ceoAnnual) + ' in recovered capacity annually.',
+      breakdown: [
+        { label: 'CEO effective hourly rate based on ' + fmt(ceoComp) + ' annual compensation', value: ceoHourly },
+        { label: ceoHrsWeek + ' hours per week recovered × 52 weeks', value: ceoAnnual },
+      ],
+      assumptions: 'This calculation uses ' + ceoHrsWeek + ' hours per week, which is conservative — many CEOs report that a capable Chief of Staff recovers 15–20 hours weekly. It values those hours at direct compensation only, with no multiplier for the strategic value of CEO time. It does not account for the cost of context-switching, which research consistently shows is one of the largest drains on executive productivity.',
+      beyondTheNumbers: 'The math here is asymmetric. Those recovered hours aren\'t just saved — they\'re reinvested into the activities that actually shape the trajectory of your company: fundraising conversations, key hires, strategic partnerships, and the product and business decisions that only you can make. The upside of a CEO spending time on the right things dwarfs the cost of the person who makes that possible. A good Chief of Staff doesn\'t just free up your time. They multiply it.',
+    },
+    {
+      id: 'ops', title: 'Operational Optimization', icon: '⚙️', accent: '#28785E',
+      removableItems: true,
+      description: 'The most impactful contribution a Chief of Staff makes isn\'t their own individual effort — it\'s the systems and structures they implement that exponentially increase everyone else\'s output. This is especially true in growing organizations where the CoS often runs operations, standing up the infrastructure that makes everything else run smoother: financial systems that turn month-end from a scramble into a byproduct, project management that makes delivery predictable, information architecture that eliminates the context chase, dashboards that give leadership real-time visibility, and resource allocation that puts the right people in the right seats before gaps become crises.',
+      breakdown: [
+        { itemId: 'o_fin', label: 'Financial infrastructure — centralizing invoice schedules, automating flags, standardizing templates, and making reporting a byproduct of the workflow rather than a time-consuming end-of-month crunch', value: finInfra },
+        { itemId: 'o_proj', label: 'Project management — implementing standardized intake, unified tracking, weekly health checks, change management protocols, and post-mortems that feed back into how the next project runs', value: projMgmt },
+        { itemId: 'o_info', label: 'Information architecture — establishing one source of truth for priorities, clear rules for communication channels, and templates that let your team focus on substance rather than formatting', value: infoArch },
+        { itemId: 'o_dash', label: 'Dashboards and reporting — consolidating all relevant business data into one place, built on clean data and standard workflows, so leadership has a real-time picture instead of waiting for monthly manual compilation', value: dashboards },
+        { itemId: 'o_res', label: 'Resource allocation — creating clear visibility into team capacity so work is distributed effectively, no one is overloaded while others sit idle, and hiring needs surface before delivery suffers', value: resourceAlloc },
+      ],
+      assumptions: 'These estimates assume partial efficiency gains — typically 50–65% recovery of wasted time — not full elimination. Project overrun savings are based on avoiding just one per year. The information architecture calculation assumes each staff member loses only 2 hours per week to searching for documents, re-asking decided questions, and recreating work that already exists — a figure that is almost certainly understated in most organizations. Resource allocation savings use only a 5% wasted-capacity figure, when many organizations experience significantly more.',
+      beyondTheNumbers: 'None of this is about the Chief of Staff working harder. It\'s about building systems that make effort compound. The harder-to-measure upside — fewer missed deadlines, better client retention, directors actually leading instead of compiling spreadsheets, reduced attrition from less organizational frustration — tends to dwarf the hourly math over time. These systems represent roughly 3–4 full-time-equivalent salaries\' worth of productivity returned to the organization, and they continue working long after they\'re built.',
+    },
+  ];
+}
+
+function getCatAnnual(cat) {
+  if (!cat.removableItems) return cat.annual;
+  return Math.round(cat.breakdown.reduce(function(sum, b) {
+    return sum + (b.itemId && hiddenItems.has(b.itemId) ? 0 : b.value);
+  }, 0));
+}
+
+// ── Rendering ──
+function renderCard(cat) {
+  const annual = getCatAnnual(cat);
+  var html = '<div class="card" id="card-' + cat.id + '" style="border-left:4px solid ' + cat.accent + '">';
+  html += '<button class="remove-btn" onclick="removeCategory(\'' + cat.id + '\')" title="Remove this category">✕</button>';
+  html += '<div class="card-header" onclick="toggleCard(\'' + cat.id + '\')">';
+  html += '<div class="left"><span class="icon">' + cat.icon + '</span><span class="title-text">' + cat.title + '</span></div>';
+  html += '<div class="right"><span class="card-amount" data-key="cat-' + cat.id + '" id="catval-' + cat.id + '">' + fmt(annual) + '</span>';
+  html += '<span class="chevron" id="chev-' + cat.id + '">▾</span></div></div>';
+  html += '<div class="expanded" id="exp-' + cat.id + '" style="display:none">';
+
+  // What a CoS changes
+  html += '<div class="section-block"><h4 class="section-heading">What a Chief of Staff changes</h4>';
+  html += '<p class="body-text">' + cat.description + '</p></div>';
+
+  // How calculated
+  html += '<div class="section-block"><h4 class="section-heading">How this is calculated</h4>';
+  cat.breakdown.forEach(function(b) {
+    if (b.itemId && hiddenItems.has(b.itemId)) return;
+    html += '<div class="breakdown-row">';
+    html += '<span class="breakdown-label">' + b.label + '</span>';
+    html += '<span class="breakdown-val">' + fmt(b.value) + '</span>';
+    if (cat.removableItems && b.itemId) {
+      html += '<button class="remove-item-btn" onclick="event.stopPropagation();removeItem(\'' + b.itemId + '\')" title="Remove this line item">✕</button>';
+    }
+    html += '</div>';
+  });
+  // Restore items button
+  if (cat.removableItems) {
+    var hasHidden = cat.breakdown.some(function(b) { return b.itemId && hiddenItems.has(b.itemId); });
+    if (hasHidden) {
+      html += '<button class="restore-btn small" onclick="restoreItemsFor(\'' + cat.id + '\')">Restore removed items</button>';
+    }
+  }
+  html += '</div>';
+
+  // Why floor estimate
+  html += '<div class="section-block"><h4 class="section-heading">Why this is a floor estimate</h4>';
+  html += '<p class="body-text">' + cat.assumptions + '</p></div>';
+
+  // Beyond the numbers
+  html += '<div class="section-block" style="margin-bottom:0;border-bottom:none;padding-bottom:0"><h4 class="section-heading">The impact beyond the numbers</h4>';
+  html += '<p class="body-text">' + cat.beyondTheNumbers + '</p></div>';
+
+  html += '</div></div>';
+  return { html: html, annual: annual };
+}
+
+const openCards = new Set();
+
+function render() {
+  const cats = getCategories();
+  const container = document.getElementById('cardsContainer');
+  let total = 0;
+  let cardHtml = '';
+
+  cats.forEach(function(cat) {
+    if (hiddenCategories.has(cat.id)) return;
+    const r = renderCard(cat);
+    cardHtml += r.html;
+    total += r.annual;
+  });
+
+  container.innerHTML = cardHtml;
+
+  // Restore open states
+  openCards.forEach(function(id) {
+    const exp = document.getElementById('exp-' + id);
+    const chev = document.getElementById('chev-' + id);
+    if (exp) { exp.style.display = 'block'; }
+    if (chev) { chev.classList.add('open'); }
+  });
+
+  // Animate total
+  animateTo(document.getElementById('totalValue'), Math.round(total));
+
+  // Animate each category value
+  cats.forEach(function(cat) {
+    if (hiddenCategories.has(cat.id)) return;
+    const el = document.getElementById('catval-' + cat.id);
+    if (el) animateTo(el, getCatAnnual(cat));
+  });
+
+  // Show/hide restore all
+  document.getElementById('restoreAllContainer').style.display =
+    (hiddenCategories.size > 0 || hiddenItems.size > 0) ? 'block' : 'none';
+}
+
+function toggleCard(id) {
+  const exp = document.getElementById('exp-' + id);
+  const chev = document.getElementById('chev-' + id);
+  if (!exp) return;
+  if (exp.style.display === 'none') {
+    exp.style.display = 'block';
+    chev.classList.add('open');
+    openCards.add(id);
+  } else {
+    exp.style.display = 'none';
+    chev.classList.remove('open');
+    openCards.delete(id);
+  }
+}
+
+function removeCategory(id) { hiddenCategories.add(id); openCards.delete(id); render(); }
+function removeItem(itemId) { hiddenItems.add(itemId); render(); }
+
+function restoreItemsFor(catId) {
+  const cats = getCategories();
+  var cat = cats.find(function(c) { return c.id === catId; });
+  if (!cat) return;
+  cat.breakdown.forEach(function(b) { if (b.itemId) hiddenItems.delete(b.itemId); });
+  render();
+}
+
+function restoreAll() {
+  hiddenCategories.clear();
+  hiddenItems.clear();
+  render();
+}
+
+// ── Init ──
+inputs.forEach(function(id) {
+  document.getElementById(id).addEventListener('input', render);
+});
+render();
+</script>
+</body>
+</html>
