@@ -451,7 +451,7 @@
   .typewriter-dynamic{
     display:block;
     color:var(--gold);
-    min-height:1.2em;
+    min-height:2.4em;
   }
   .typewriter-cursor{
     display:inline-block;
@@ -2013,9 +2013,8 @@
       'scale their company.',
       'build more effective systems.',
       'find leakages.',
-      'coordinate cross-departmental initiatives.',
-      'fight fires for you.',
-      'hand someone else that chaos.'
+      'stop firefighting.',
+      'hand someone else the chaos.'
     ];
     const typeSpeed = 55;
     const eraseSpeed = 35;
@@ -2047,6 +2046,29 @@
         }
       }
     }
+
+    // Measure tallest phrase to prevent layout shift
+    const dynamicWrap = el.parentElement;
+    let maxH = 0;
+    phrases.forEach(p => {
+      el.textContent = p;
+      maxH = Math.max(maxH, dynamicWrap.scrollHeight);
+    });
+    dynamicWrap.style.minHeight = maxH + 'px';
+    el.textContent = '';
+
+    // Remeasure on resize
+    let resizeTimer;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => {
+        const saved = el.textContent;
+        let h = 0;
+        phrases.forEach(p => { el.textContent = p; h = Math.max(h, dynamicWrap.scrollHeight); });
+        dynamicWrap.style.minHeight = h + 'px';
+        el.textContent = saved;
+      }, 200);
+    });
 
     // Respect reduced motion
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches){
