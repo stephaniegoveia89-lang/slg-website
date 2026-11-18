@@ -385,9 +385,23 @@
   .bg-parchment{ background:var(--parchment); }
   .bg-white{ background:var(--white); }
 
+  /* ---------- Intro band ---------- */
+  .intro-band{ padding:88px 0; background:var(--parchment); }
+  .intro-grid{ display:grid; grid-template-columns:1fr 1.15fr; gap:64px; align-items:center; }
+  .intro-head h2{ font-size:40px; line-height:1.15; margin-top:14px; text-wrap:balance; }
+  .intro-body{ border-left:3px solid var(--gold); padding-left:32px; }
+  .intro-body p{ font-size:18px; line-height:1.7; color:var(--charcoal); margin:0; }
+  .intro-body p + p{ margin-top:16px; }
+  @media (max-width:860px){
+    .intro-band{ padding:64px 0; }
+    .intro-grid{ grid-template-columns:1fr; gap:24px; }
+    .intro-head h2{ font-size:30px; }
+    .intro-body{ padding-left:20px; }
+    .intro-body p{ font-size:16.5px; }
+  }
   /* ---------- Hero ---------- */
   .hero{
-    padding:96px 0 108px;
+    padding:96px 0 88px;
     background:
       radial-gradient(ellipse 620px 420px at 18% -10%, rgba(40,120,94,0.10), transparent 60%),
       radial-gradient(ellipse 560px 380px at 85% 8%, rgba(226,201,122,0.16), transparent 60%),
@@ -442,7 +456,7 @@
     line-height:1.35;
   }
   .hero-ctas{
-    margin-top:36px;
+    margin-top:40px;
     display:flex;
     gap:16px;
     align-items:center;
@@ -1420,10 +1434,6 @@
         <span class="typewriter-static">Un leadership opérationnel pour les fondateurs qui veulent</span>
         <span class="typewriter-dynamic"><span id="typewriter-text"></span><span class="typewriter-cursor"></span></span>
       </h1>
-      <div class="lede">
-        <p class="lede-strong">Votre entreprise a grandi. Vos systèmes, eux, n'ont pas suivi.</p>
-        <p>J'accompagne les fondateurs et les PDG d'entreprises numériques, et d'entreprises dont l'équipe numérique prend de l'ampleur, qui ont dépassé leur façon de fonctionner. J'apporte le leadership opérationnel, la vision financière et la structure de gestion dont vous avez besoin pour continuer à croître, sans que tout passe par vous.</p>
-      </div>
       <div class="hero-ctas">
         <a href="#contact" class="btn btn-primary">Réserver un appel stratégique</a>
         <a href="#how-i-work" class="btn btn-ghost">Mon approche</a>
@@ -1461,6 +1471,20 @@
       </div>
     </div>
   </div>
+
+  <!-- ================= INTRO BAND ================= -->
+  <section class="intro-band">
+    <div class="wrap intro-grid reveal">
+      <div class="intro-head">
+        <p class="eyebrow">Ce que je fais</p>
+        <h2>Votre entreprise a grandi. Vos systèmes, eux, n'ont pas suivi.</h2>
+      </div>
+      <div class="intro-body">
+        <p>J'accompagne les fondateurs et les PDG d'entreprises numériques, et d'entreprises dont l'équipe numérique prend de l'ampleur, qui ont dépassé leur façon de fonctionner.</p>
+        <p>J'apporte le leadership opérationnel, la vision financière et la structure de gestion dont vous avez besoin pour continuer à croître, sans que tout passe par vous.</p>
+      </div>
+    </div>
+  </section>
 
   <!-- ================= PROBLEM RECOGNITION ================= -->
   <section class="bg-white">
